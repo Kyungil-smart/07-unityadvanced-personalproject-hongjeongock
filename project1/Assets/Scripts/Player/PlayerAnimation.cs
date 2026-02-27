@@ -11,7 +11,6 @@ public class PlayerAnimation : MonoBehaviour
     private Animator _animator;
     private PlayerMovement _playerMovement;
     private PlayerController _playerController;
-    private PlayerTarget _playerTarget;
 
     private void Awake() => Init();
     private void OnEnable() => SubscribeEvents();
