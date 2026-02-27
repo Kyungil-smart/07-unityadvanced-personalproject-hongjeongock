@@ -13,9 +13,21 @@ public class PlayerController : MonoBehaviour
     [Header("플레이어 공격 쿨타임")]
     [SerializeField] public float _playerATKTime;
 
+    private float _nextAttackTime;
+
     public event Action OnDeath;
+    public event Action OnAttack;
     public bool IsDead { get; private set; }
 
+    private void Update()
+    {
+        if(IsDead)return;
+        if (Input.GetMouseButtonDown(0))
+        {
+            Debug.Log("공격!");
+            Attack();
+        }
+    }
     private void Awake()
     {
         ResetHP();
@@ -38,6 +50,15 @@ public class PlayerController : MonoBehaviour
             _playerCurrentHp = 0f;
             Die();
         }
+    }
+
+    public void Attack()
+    {
+        if(IsDead) return;
+        if(Time.time <_nextAttackTime)return;
+        
+        _nextAttackTime = Time.time + _playerATKTime;
+        OnAttack?.Invoke();
     }
 
     private void Die()

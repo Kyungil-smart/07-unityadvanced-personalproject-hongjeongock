@@ -5,6 +5,7 @@ public class PlayerMovement : MonoBehaviour
 {
     [Header("이동 속도")]
     [SerializeField] public float _moveSpeed;
+    [SerializeField] public float _runSpeed;
     
     [Header("회전 속도")]
     [SerializeField] private float _rotateSpeed;
@@ -14,9 +15,13 @@ public class PlayerMovement : MonoBehaviour
     Vector3 _movement = Vector3.zero;
 
     private bool _prevIsMoving;
+    private bool _prevRunning;
+    private bool _isRunning;
     public bool IsMoving { get; private set; }
 
     public event Action<float> OnMove;
+    public event Action<bool> OnRunChanged;
+    public bool IsRunning => _isRunning;
 
     private void Awake()
     {
@@ -31,8 +36,21 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void Update()
-    {
+    { 
         HandleMovement();
+        bool now = Input.GetKey(KeyCode.LeftShift);
+        if(now != _prevIsMoving)
+        {
+            _prevRunning = now;
+            _isRunning = now;
+            OnRunChanged?.Invoke(_prevRunning);
+        }
+        else
+        {
+            _isRunning = now;
+        }
+        
+        OnMove?.Invoke(_movement.magnitude);
     }
     
     private void Rotate()
@@ -44,12 +62,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void Move()
     {
-        if (!IsMoving)
-        {
-            _rigidbody.linearVelocity = Vector3.zero;
-            return;
-        }
-
+        if (!IsMoving)return;
+        
+        float speed = _isRunning ? _runSpeed : _moveSpeed;
+        
         _rigidbody.MovePosition(_rigidbody.position + _movement * (_moveSpeed * Time.fixedDeltaTime));
     }
 
