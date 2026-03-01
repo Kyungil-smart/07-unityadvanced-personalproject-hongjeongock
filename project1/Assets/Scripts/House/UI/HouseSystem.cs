@@ -7,7 +7,8 @@ using UnityEngine.UI;
 public class HouseSystem : MonoBehaviour
 {
     [Header("의존성")]
-    [SerializeField] private ResourceInventory inventory;
+    [SerializeField] private ResourceInventory playerInventory;
+    [SerializeField] private ResourceInventory upgradeStorage;
 
     [Header("베이스 업그레이드 테이블")] 
     [SerializeField] private HouseUpgradeDefinition[] upgradeDefs;
@@ -37,7 +38,7 @@ public class HouseSystem : MonoBehaviour
 
         foreach (var cost in nextDef.costs)
         {
-            if(!inventory.Has(cost.resource, cost.amount))
+            if(!upgradeStorage.Has(cost.resource, cost.amount))
                 return false;
         }
         return true;
@@ -50,7 +51,7 @@ public class HouseSystem : MonoBehaviour
 
         foreach (var cost in nextDef.costs)
         {
-            inventory.Spend(cost.resource, cost.amount);
+            upgradeStorage.Spend(cost.resource, cost.amount);
         }
 
         CurrentLevel = nextDef.level;
@@ -76,5 +77,18 @@ public class HouseSystem : MonoBehaviour
         var def = upgradeDefs.FirstOrDefault(d => d.level == level);
         if (def != null)
             ApplyHouseVisual(def);
+    }
+
+    public bool TryDepositToStorage(ResourceDefinition resource, int amount)
+    { 
+        if(amount <= 0) return  false;
+        if(playerInventory == null || upgradeStorage == null)return false;
+        
+        if(!playerInventory.Has(resource, amount))return  false;
+        
+        playerInventory.Spend(resource, amount);
+        
+        upgradeStorage.Add(resource, amount);
+        return true;
     }
 }

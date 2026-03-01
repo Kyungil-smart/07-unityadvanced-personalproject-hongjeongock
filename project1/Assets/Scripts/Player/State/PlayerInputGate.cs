@@ -17,4 +17,9 @@ public class PlayerInputGate : MonoBehaviour
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
     }
+    void Update()
+    {
+        if (Input.anyKeyDown) Debug.Log("AnyKeyDown");
+        if (Input.GetKeyDown(KeyCode.W)) Debug.Log("W Down");
+    }
 }

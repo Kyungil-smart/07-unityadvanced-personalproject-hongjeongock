@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,11 +9,22 @@ public class UpgradePanelUI : MonoBehaviour
     [SerializeField] private Button upgradeButton;
     [SerializeField] private Button closeButton;
     [SerializeField] private TMP_Text infoText;
+    
+    [SerializeField] private ResourceDefinition woodResource;
+    [SerializeField] private ResourceDefinition stoneResource;
+    [SerializeField] private ResourceDefinition ironResource;
 
     [Header("입력 잠금")]
     [SerializeField] private PlayerInputGate inputGate;
 
     private HouseSystem _houseSystem;
+
+    private void Start()
+    {
+        Close();
+    }
+    
+    
 
     private void Awake()
     {
@@ -57,5 +69,23 @@ public class UpgradePanelUI : MonoBehaviour
 
         if (_houseSystem.TryUpgrade())
             Refresh();
+    }
+    public void OnClickDepositWood()
+    {
+        if (_houseSystem == null) return;
+        _houseSystem.TryDepositToStorage(woodResource, 1);
+        Refresh();
+    }
+    public void OnClickDepositStone()
+    {
+        if (_houseSystem == null) return;
+        _houseSystem.TryDepositToStorage(stoneResource, 1);
+        Refresh();
+    }
+    public void OnClickDepositIron()
+    {
+        if (_houseSystem == null) return;
+        _houseSystem.TryDepositToStorage(ironResource, 1);
+        Refresh();
     }
 }

@@ -49,9 +49,8 @@ public class ResourceHUD : MonoBehaviour
         }
     }
 
-    private void HandleChanged(string id, int amount)
+    private void HandleChanged()
     {
-        if (_rows.TryGetValue(id, out var row))
-            row.SetAmount(amount);
+        Build();
     }
 }

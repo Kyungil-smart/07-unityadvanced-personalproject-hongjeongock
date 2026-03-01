@@ -1,44 +1,67 @@
 using System;
 using System.Collections.Generic;
-using Mono.Cecil;
 using UnityEngine;
 
 public class ResourceInventory : MonoBehaviour
 {
-    private readonly Dictionary<string, int> _amounts = new();
-    
-    public event Action<string, int> OnChanged;
-
-    public int GetAmount(ResourceDefinition def)
+    [System.Serializable]
+    private class Entry
     {
-        if(def == null) return 0;
-        return _amounts.TryGetValue(def.id, out var amount) ? amount : 0;
+        public ResourceDefinition resource;
+        public int amount;
     }
 
-    public void Add(ResourceDefinition def, int amount)
+    [SerializeField] private List<Entry> entries = new();
+
+    private readonly Dictionary<ResourceDefinition, int> _map = new();
+
+    public event Action OnChanged;
+
+    public int GetAmount(ResourceDefinition resource) => Get(resource);
+
+    private void Awake()
     {
-        if(def == null || amount <= 0) return;
-        
-        int current = GetAmount(def);
-        int next = current + amount;
-        _amounts[def.id] = next;
-        
-        OnChanged?.Invoke(def.id, next);
+        Rebuild();
     }
 
-    public bool Has(ResourceDefinition def, int required)
+    private void Rebuild()
     {
-        if(def == null) return  false;
-        return GetAmount(def) >= required;
+        _map.Clear();
+        foreach (var e in entries)
+        {
+            if (e.resource == null) continue;
+            _map[e.resource] = Mathf.Max(0, e.amount);
+        }
+        OnChanged?.Invoke();
     }
 
-    public bool Spend(ResourceDefinition def, int amount)
+    public int Get(ResourceDefinition resource)
     {
-        if (!Has(def, amount)) return false;
-        
-        int next = GetAmount(def) -  amount;
-        _amounts[def.id] = next;
-        OnChanged?.Invoke(def.id, next);
+        if (resource == null) return 0;
+        return _map.TryGetValue(resource, out var v) ? v : 0;
+    }
+
+    public bool Has(ResourceDefinition resource, int amount)
+    {
+        if (resource == null) return false;
+        return Get(resource) >= amount;
+    }
+
+    public void Add(ResourceDefinition resource, int amount)
+    {
+        if (resource == null || amount <= 0) return;
+
+        int cur = Get(resource);
+        _map[resource] = cur + amount;
+        OnChanged?.Invoke();
+    }
+
+    public bool Spend(ResourceDefinition resource, int amount)
+    {
+        if (!Has(resource, amount)) return false;
+
+        _map[resource] = Get(resource) - amount;
+        OnChanged?.Invoke();
         return true;
     }
 }

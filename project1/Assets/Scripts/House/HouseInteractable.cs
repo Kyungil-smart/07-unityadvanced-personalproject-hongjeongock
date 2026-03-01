@@ -19,12 +19,14 @@ public class HouseInteractable : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("Upgrade Zone Enter: " + other.name);
         if (other.CompareTag("Player"))
             _playerInRange = true;
     }
 
     private void OnTriggerExit(Collider other)
     {
+        Debug.Log("Upgrade Zone Exit: " + other.name);
         if (other.CompareTag("Player"))
             _playerInRange = false;
     }
