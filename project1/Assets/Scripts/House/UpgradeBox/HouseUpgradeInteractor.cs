@@ -1,5 +1,6 @@
 using System;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class HouseUpgradeInteractor : MonoBehaviour
@@ -15,6 +16,9 @@ public class HouseUpgradeInteractor : MonoBehaviour
     [SerializeField] private UpgradePanelUI upgradePanelUI;
 
     private bool _inZone;
+
+    private float _eBufferTimer;
+    [SerializeField] private float eBufferTime = 0.2f;
 
     private void Awake()
     {
@@ -46,18 +50,21 @@ public class HouseUpgradeInteractor : MonoBehaviour
 
    private void Update()
     {
+        if(Input.GetKeyDown(KeyCode.E))
+            _eBufferTimer = eBufferTime;
+
+        if(_eBufferTimer > 0) _eBufferTimer -= Time.deltaTime;
+
         if(!_inZone) return;
+        if(upgradePanelRoot == null || houseSystem == null) return;
 
-        if (Input.GetKeyDown(KeyCode.E))
+        if(upgradePanelUI.gameObject.activeSelf) return;
+
+        if(_eBufferTimer > 0)
         {
-            if (upgradePanelUI == null || houseSystem == null) return;
-
-            // 이미 열려있으면 무시(버튼 클릭 방해 방지)
-            if (upgradePanelUI.gameObject.activeSelf) return;
-
+            _eBufferTimer = 0f;
             upgradePanelUI.Open(houseSystem);
-
-            if (eHintUI != null) eHintUI.SetActive(false);
+            if(upgradePanelUI != null) upgradePanelRoot.SetActive(true);
         }
 }
 }
