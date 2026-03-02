@@ -4,6 +4,7 @@ public class HouseInteractable : MonoBehaviour
 {
     [SerializeField] private HouseSystem houseSystem;
     [SerializeField] private UpgradePanelUI upgradePanel;
+    [SerializeField] private GameObject eHintUI;
 
     private bool _playerInRange;
 
@@ -13,21 +14,28 @@ public class HouseInteractable : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.E))
         {
+            Debug.Log("[E] pressed - opening panel");
             upgradePanel.Open(houseSystem);
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Upgrade Zone Enter: " + other.name);
-        if (other.CompareTag("Player"))
-            _playerInRange = true;
+        Debug.Log($"[ENTER] {other.name} tag={other.tag} id={other.GetInstanceID()}");
+
+        if (!other.CompareTag("Player")) return;
+
+        _playerInRange = true;
+        if (eHintUI != null) eHintUI.SetActive(true);
     }
 
     private void OnTriggerExit(Collider other)
     {
-        Debug.Log("Upgrade Zone Exit: " + other.name);
-        if (other.CompareTag("Player"))
-            _playerInRange = false;
+        Debug.Log($"[EXIT] {other.name} tag={other.tag} id={other.GetInstanceID()}");
+
+        if (!other.CompareTag("Player")) return;
+
+        _playerInRange = false;
+        if (eHintUI != null) eHintUI.SetActive(false);
     }
 }

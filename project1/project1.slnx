@@ -20,7 +20,6 @@
   <Project Path="Unity.Splines.csproj" />
   <Project Path="Unity.Burst.csproj" />
   <Project Path="Unity.Services.Core.Environments.Editor.csproj" />
-  <Project Path="Unity.Tutorials.Core.Editor.csproj" />
   <Project Path="Unity.VisualScripting.Flow.Editor.csproj" />
   <Project Path="Unity.ProBuilder.Csg.csproj" />
   <Project Path="Unity.Animation.Rigging.csproj" />
@@ -57,15 +56,12 @@
   <Project Path="UnityEngine.Purchasing.Codeless.csproj" />
   <Project Path="Unity.Postprocessing.Runtime.csproj" />
   <Project Path="Unity.Analytics.DataPrivacy.csproj" />
-  <Project Path="Unity.InternalAPIEngineBridge.007.csproj" />
   <Project Path="Unity.InternalAPIEditorBridge.013.csproj" />
   <Project Path="Unity.AI.Navigation.Editor.csproj" />
-  <Project Path="Unity.InternalAPIEditorBridge.007.csproj" />
   <Project Path="Unity.Services.Core.Configuration.Editor.csproj" />
   <Project Path="Unity.Services.Core.Configuration.csproj" />
   <Project Path="Unity.ProBuilder.KdTree.csproj" />
   <Project Path="Unity.ProBuilder.AddOns.Editor.csproj" />
-  <Project Path="Unity.Tutorials.Authoring.Editor.csproj" />
   <Project Path="Unity.Services.Core.Environments.Internal.csproj" />
   <Project Path="Unity.InputSystem.ForUI.csproj" />
   <Project Path="Unity.Services.Core.Scheduler.csproj" />
@@ -78,7 +74,6 @@
   <Project Path="Unity.Services.Core.Components.csproj" />
   <Project Path="Unity.Mathematics.Editor.csproj" />
   <Project Path="Unity.VisualScripting.SettingsProvider.Editor.csproj" />
-  <Project Path="Unity.Tutorials.Core.csproj" />
   <Project Path="Purchasing.Common.csproj" />
   <Project Path="Unity.VSCode.Editor.csproj" />
   <Project Path="Unity.Services.Core.Threading.csproj" />
@@ -89,7 +84,6 @@
   <Project Path="Unity.Profiling.Core.csproj" />
   <Project Path="Unity.Services.Core.Device.csproj" />
   <Project Path="Unity.Services.Core.Analytics.csproj" />
-  <Project Path="Unity.EditorCoroutines.Editor.csproj" />
   <Project Path="UnityEngine.Purchasing.AppleStub.csproj" />
   <Project Path="UnityEngine.Purchasing.AppleCore.csproj" />
   <Project Path="UnityEngine.Purchasing.SecurityStub.csproj" />

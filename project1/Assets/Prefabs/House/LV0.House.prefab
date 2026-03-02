@@ -9634,6 +9634,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2111017074457520717}
+  - component: {fileID: 8054471386412654958}
   m_Layer: 0
   m_Name: LV0.House
   m_TagString: Untagged
@@ -9651,7 +9652,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -25.01854, y: 0, z: -20.56139}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8723521903982928094}
@@ -9660,6 +9661,22 @@ Transform:
   - {fileID: 871788122470144591}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8054471386412654958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2109415417077117718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68137d0c196b8b14fadcf3bb411ec62b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HouseSystem
+  playerInventory: {fileID: 0}
+  upgradeStorage: {fileID: 0}
+  upgradeDefs: []
+  houseRoot: {fileID: 0}
 --- !u!1 &2112100368433742550
 GameObject:
   m_ObjectHideFlags: 0
@@ -45171,6 +45188,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2111017074457520717}
     m_Modifications:
+    - target: {fileID: 421261477935041522, guid: e6d1044ac01403840a4db2f032d01d1c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.502
+      objectReference: {fileID: 0}
+    - target: {fileID: 2614458037168054079, guid: e6d1044ac01403840a4db2f032d01d1c, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3815680436491649873, guid: e6d1044ac01403840a4db2f032d01d1c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.554
@@ -45215,13 +45240,40 @@ PrefabInstance:
       propertyPath: m_Name
       value: WoodenBox
       objectReference: {fileID: 0}
+    - target: {fileID: 4593624927647455723, guid: e6d1044ac01403840a4db2f032d01d1c, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2614458037168054079, guid: e6d1044ac01403840a4db2f032d01d1c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7554401316516501306}
   m_SourcePrefab: {fileID: 100100000, guid: e6d1044ac01403840a4db2f032d01d1c, type: 3}
 --- !u!4 &871788122470144591 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3815680436491649873, guid: e6d1044ac01403840a4db2f032d01d1c, type: 3}
   m_PrefabInstance: {fileID: 4101991502031542558}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2064152976927475233 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2614458037168054079, guid: e6d1044ac01403840a4db2f032d01d1c, type: 3}
+  m_PrefabInstance: {fileID: 4101991502031542558}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7554401316516501306
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2064152976927475233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa07d60434fe2154795f13371fa2066d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HouseInteractable
+  houseSystem: {fileID: 8054471386412654958}
+  upgradePanel: {fileID: 0}
+  eHintUI: {fileID: 0}
