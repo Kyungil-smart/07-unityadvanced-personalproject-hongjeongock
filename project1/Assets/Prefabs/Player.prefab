@@ -243,6 +243,10 @@ GameObject:
   - component: {fileID: 6400384270019020629}
   - component: {fileID: 2791108294561111173}
   - component: {fileID: 8589796455476540929}
+  - component: {fileID: 2003754223059633474}
+  - component: {fileID: 6627919690354382141}
+  - component: {fileID: 8853544719962215567}
+  - component: {fileID: 5175929503500167055}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -443,6 +447,86 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ResourceInventory
   entries: []
+--- !u!114 &2003754223059633474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1572250675393087713}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be1b6f52a2d824d49b01f8505d9e0ad1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: NewAssembly::Inventory
+--- !u!114 &6627919690354382141
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1572250675393087713}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfa86533a7b7743acbbf3e79c9337aa4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InventoryManager
+  _currentInventory: {fileID: 11400000, guid: 71c3baf43f3aa2544b1dd2d0e3462178, type: 2}
+  _useItemEvent: {fileID: 11400000, guid: 5eace5f454f05144188b664a36af26fd, type: 2}
+  _equipItemEvent: {fileID: 11400000, guid: 53f3739b02d88b74b9c8f7e635b0acf5, type: 2}
+  _addItemEvent: {fileID: 11400000, guid: ccbc4d491b7f44d4f81298b2fd4f6ede, type: 2}
+  _removeItemEvent: {fileID: 11400000, guid: 02b0076a3b1cbde4bbb3b135cbb248d8, type: 2}
+--- !u!114 &8853544719962215567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1572250675393087713}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5eb1a5a891704b35b2ad0529d003d43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIManager
+  _selectionHandler: {fileID: 0}
+  _popupPanel: {fileID: 0}
+  _inGameScene: {fileID: 0}
+  _inventoryPanel: {fileID: 0}
+  _pauseScreen: {fileID: 0}
+  _inputReader: {fileID: 11400000, guid: 945ec0365077176418488737deed54be, type: 2}
+  _onSceneReady: {fileID: 11400000, guid: 12110c85d3541db46bee00b1cfa375dc, type: 2}
+  _openInventoryScreenEvent: {fileID: 11400000, guid: c622770017340fa43b7671332a505dc9, type: 2}
+  _inventoryScreenOpenedEvent: {fileID: 0}
+--- !u!114 &5175929503500167055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1572250675393087713}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.PlayerInput
+  m_Actions: {fileID: -944628639613478452, guid: 47a7bd10b734b954e95d4dbf166f5578, type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Gameplay
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &1774409301741810847
 GameObject:
   m_ObjectHideFlags: 0
