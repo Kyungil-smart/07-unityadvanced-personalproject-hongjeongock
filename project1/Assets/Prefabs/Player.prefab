@@ -267,9 +267,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 2120482093297330821}
   - {fileID: 56197252175974050}
   - {fileID: 1406343255441791274}
-  - {fileID: 2120482093297330821}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &3858828538722970892
@@ -309,6 +309,7 @@ MonoBehaviour:
   _moveSpeed: 5
   _runSpeed: 10
   _rotateSpeed: 0
+  _mouseRotateSpeed: 200
 --- !u!114 &1324242607863036015
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -430,10 +431,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInteractor
   playerCamera: {fileID: 7280210999470508938}
   inputGate: {fileID: 6400384270019020629}
+  playerTransform: {fileID: 0}
   interactDistance: 3
-  interactLayer:
+  interactableMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
+  InteractKey: 101
 --- !u!114 &8589796455476540929
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1448,6 +1451,9 @@ MonoBehaviour:
   collisionMask:
     serializedVersion: 2
     m_Bits: 4294967295
+  indoorTopViewAngle: 70
+  indoorDistance: 8
+  transitionSpeed: 3
 --- !u!1 &7924725254261429753
 GameObject:
   m_ObjectHideFlags: 0

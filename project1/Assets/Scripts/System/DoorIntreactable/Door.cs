@@ -19,15 +19,24 @@ public class Door : MonoBehaviour, IInteractable
 
     }
 
+    [SerializeField] private float doorOpenSpeed = 500f;
+
     public List<DoorGet> UseDoors = new List<DoorGet>();
+
 
     public string Prompt => door_in_use ? "사용중..." : "문 열기/닫기";
 
 
     public bool door_in_use;
 
+    public void Interact()
+    {
+        Debug.Log("[Door] Interact() 호출됨");
+        MoveMyDoor();
+    }
     public void Interact(GameObject interactor)
     {
+        Debug.Log("[Door] Interact(GameObject interactor) 호출됨" + (interactor ? interactor.name : "null"));
         MoveMyDoor();
     }
 
@@ -113,9 +122,9 @@ public class Door : MonoBehaviour, IInteractable
 
         if (Angle > 0)
         {
-            RotationOri.transform.Rotate(new Vector3(0, 0, 95 * Time.deltaTime));
+            RotationOri.transform.Rotate(new Vector3(0, doorOpenSpeed * Time.deltaTime, 0));
 
-            if (Angle < RotationOri.transform.localEulerAngles.z)
+            if (Angle < RotationOri.transform.localEulerAngles.y)
             {
 
                 door_in_use = false;
@@ -131,9 +140,9 @@ public class Door : MonoBehaviour, IInteractable
         if (Angle < 0)
         {
 
-            RotationOri.transform.Rotate(new Vector3(0, 0, -95 * Time.deltaTime));
+            RotationOri.transform.Rotate(new Vector3(0, -doorOpenSpeed * Time.deltaTime, 0));
 
-            if ((360 + Angle) > RotationOri.transform.localEulerAngles.z)
+            if ((360 + Angle) > RotationOri.transform.localEulerAngles.y)
             {
 
                 door_in_use = false;
@@ -163,20 +172,19 @@ public class Door : MonoBehaviour, IInteractable
 
         if (OpenValue == 88)
         {
+            RotationOri.transform.Rotate(new Vector3(0, -doorOpenSpeed * Time.deltaTime, 0));
 
-            RotationOri.transform.Rotate(new Vector3(0, 0, -95 * Time.deltaTime));
-
-
-            if ((Angle + 2) > RotationOri.transform.localEulerAngles.z)
+            if ((Angle + 2) > RotationOri.transform.localEulerAngles.y)
             {
-
                 door_in_use = false;
-                RotationOri.transform.localEulerAngles = new Vector3(RotationOri.transform.localEulerAngles.x,
-                    RotationOri.transform.localEulerAngles.y, Angle);
+                RotationOri.transform.localEulerAngles = new Vector3(
+                    RotationOri.transform.localEulerAngles.x,
+                    Angle,       
+                    RotationOri.transform.localEulerAngles.z);
                 StopCoroutine(DoorStartUsing);
             }
 
-            if (Angle != RotationOri.transform.localEulerAngles.z)
+            if (Angle != RotationOri.transform.localEulerAngles.y)
             {
                 goto repeatLoop;
             }
@@ -184,33 +192,29 @@ public class Door : MonoBehaviour, IInteractable
 
         if (OpenValue == -88)
         {
+            RotationOri.transform.Rotate(new Vector3(0, doorOpenSpeed * Time.deltaTime, 0));
 
-            RotationOri.transform.Rotate(new Vector3(0, 0, 95 * Time.deltaTime));
-
-            if (RotationOri.transform.localEulerAngles.z > 358)
+            if (RotationOri.transform.localEulerAngles.y > 358)
             {
-
                 door_in_use = false;
-                RotationOri.transform.localEulerAngles = new Vector3(RotationOri.transform.localEulerAngles.x,
-                    RotationOri.transform.localEulerAngles.y, Angle);
+                RotationOri.transform.localEulerAngles = new Vector3(
+                    RotationOri.transform.localEulerAngles.x,
+                    Angle,
+                    RotationOri.transform.localEulerAngles.z);
                 StopCoroutine(DoorStartUsing);
             }
 
-            if (Angle != RotationOri.transform.localEulerAngles.z)
+            if (Angle != RotationOri.transform.localEulerAngles.y)
             {
-
                 goto repeatLoop;
             }
         }
 
-
-
-
-        if (Angle != RotationOri.transform.localEulerAngles.z)
+        // 맨 마지막 줄도!
+        if (Angle != RotationOri.transform.localEulerAngles.y)
         {
             goto repeatLoop;
         }
-
     }
 
     public void ResetDoor()
