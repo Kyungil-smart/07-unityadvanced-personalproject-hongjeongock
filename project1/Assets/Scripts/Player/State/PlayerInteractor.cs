@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerInteractor : MonoBehaviour
@@ -5,7 +6,6 @@ public class PlayerInteractor : MonoBehaviour
     [Header("필수 참조")]
     [SerializeField] private Camera playerCamera;
     [SerializeField] private PlayerInputGate inputGate;
-
     [SerializeField] private Transform playerTransform;
 
     [Header("레이캐스트 설정")]
@@ -13,32 +13,28 @@ public class PlayerInteractor : MonoBehaviour
     [SerializeField] private LayerMask interactableMask = ~0;
 
     [Header("상호작용 키")]
-    [SerializeField] private KeyCode InteractKey = KeyCode.E;
+    [SerializeField] private KeyCode interactKey = KeyCode.E;
+
+    [Header("플레이어 컨트롤러 참조")]
+    [SerializeField] private PlayerController playerController;
 
     private IInteractable _current;
     private IInteractable _target;
 
+    // 채집 쿨다운 (빠른 연타 방지)
+    private float _gatherCooldown = 0.5f;
+    private float _lastGatherTime;
+
     private void Awake()
     {
-        if(playerCamera == null)
-        {
-            playerCamera = Camera.main;
-        }
-
-        if (playerTransform == null)
-        {
-            playerTransform = transform;
-        }
+        if (playerCamera == null) playerCamera = Camera.main;
+        if (playerTransform == null) playerTransform = this.transform;
     }
 
     private void Update()
     {
         DetectInteractable();
 
-        if(_current != null)
-        {
-            _current.LockOn(true);
-        }
         if (inputGate != null && inputGate.IsLocked)
         {
             _target = null;
@@ -46,68 +42,50 @@ public class PlayerInteractor : MonoBehaviour
         }
 
         FindTarget();
-
-        if (_target != null && Input.GetKeyDown(KeyCode.E))
+        
+        if (_target != null && !(_target is GatherableResource) && Input.GetKeyDown(interactKey))
         {
             _target.Interact(gameObject);
         }
-
-        // 디버그용 레이 방향 확인용
-        Debug.DrawRay(
-            playerTransform.position + Vector3.up * 1f,
-            playerTransform.forward * interactDistance,
-            Color.red
-        );
-    }
-
-        private void FindTarget()
-    {
-        _target = null;
-
-        Vector3 rayOrigin = playerTransform.position + Vector3.up * 1f;
-        Vector3 rayDirection = playerTransform.forward;
-
-        var ray = new Ray(rayOrigin, rayDirection);
-
-        if(Physics.Raycast(ray, out RaycastHit hit, interactDistance, interactableMask))
+        
+        if (_target is GatherableResource gatherable && Input.GetMouseButtonDown(0))
         {
-            Debug.Log("Hit 이름 :" + hit.collider.name);
-            Debug.Log("Hit 레이어 :" + LayerMask.LayerToName(hit.collider.gameObject.layer));
+            if (Time.time - _lastGatherTime >= _gatherCooldown)
+            {
+                _lastGatherTime = Time.time;
+                
+                //if (playerController != null)
+               //     playerController.TriggerAttack();
 
-            _target = hit.collider.GetComponentInParent<IInteractable>();
-            Debug.Log("Hit 인터렉터블 존재 : " + (_target != null));
+                gatherable.Interact(gameObject);
+            }
         }
 
-        else
+        Debug.DrawRay(playerTransform.position + Vector3.up * 1f, playerTransform.forward * interactDistance, Color.red);
+    }
+
+    private void FindTarget()
+    {
+        _target = null;
+        var ray = new Ray(playerTransform.position + Vector3.up * 1f, playerTransform.forward);
+
+        if (Physics.Raycast(ray, out RaycastHit hit, interactDistance, interactableMask))
         {
-            Debug.Log("아무것도 없음");
+            _target = hit.collider.GetComponentInParent<IInteractable>();
         }
     }
 
     private void DetectInteractable()
     {
-        if(_current != null)
-        {
-            _current.LockOn(false);
-        }
-
+        if (_current != null) _current.LockOn(false);
         _current = null;
 
-        if(playerCamera == null)
-        {
-            return;
-        }
-
-        Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
+        Ray ray = new Ray(playerTransform.position + Vector3.up * 1f, playerTransform.forward);
 
         if (Physics.Raycast(ray, out RaycastHit hit, interactDistance, interactableMask))
         {
             _current = hit.collider.GetComponentInParent<IInteractable>();
-
-            if (_current != null)
-            {
-                _current.LockOn(true);
-            }
+            if (_current != null) _current.LockOn(true);
         }
     }
 }

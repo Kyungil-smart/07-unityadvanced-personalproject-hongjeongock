@@ -1825,7 +1825,7 @@ GameObject:
   - component: {fileID: 4251023549670333388}
   - component: {fileID: 2090452072830633261}
   - component: {fileID: 6921536347156648775}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Door_1.1x2.0_Frame_A1_R_a_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3464,7 +3464,7 @@ GameObject:
   - component: {fileID: 1159764977681031615}
   - component: {fileID: 5276769347193394538}
   - component: {fileID: 5821587906015564904}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Door_1.1x2.0_Ledge_A1_a_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3699,7 +3699,7 @@ GameObject:
   - component: {fileID: 5784980662544130089}
   - component: {fileID: 7118583081763716451}
   - component: {fileID: 2197366985687676507}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Door_Handle_A2_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8274,6 +8274,7 @@ Transform:
   - {fileID: 5542464955733175213}
   - {fileID: 7911791620753234167}
   - {fileID: 5394316040207340495}
+  - {fileID: 6264133223612317566}
   m_Father: {fileID: 2111017074457520717}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1809797351672294185
@@ -9027,7 +9028,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1198097939422335226}
   - component: {fileID: 6267427467211564939}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Door_1.1x2.0_Ledge_A1_a
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9868,7 +9869,7 @@ GameObject:
   - component: {fileID: 6036651242748083731}
   - component: {fileID: 245301496042306119}
   - component: {fileID: 1330418062418460873}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Door_Handle_A2_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10281,7 +10282,7 @@ GameObject:
   - component: {fileID: 4370182882296332962}
   - component: {fileID: 703403939713181571}
   - component: {fileID: 2540185256949646023}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Door_1.1x2.0_Ledge_A1_a_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10371,7 +10372,7 @@ GameObject:
   - component: {fileID: 3986233531045804884}
   - component: {fileID: 2012608392679036680}
   - component: {fileID: 8997316206429727872}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Door_1.1x2.0_Frame_Hinge_A1_R_a_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11037,7 +11038,7 @@ GameObject:
   - component: {fileID: 8800757919026800821}
   - component: {fileID: 5233387727510025727}
   - component: {fileID: 3752745680954441415}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Door_Handle_A2_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14980,8 +14981,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1298860529265596953}
-  m_Layer: 0
-  m_Name: Door
+  m_Layer: 7
+  m_Name: DoorPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19506,7 +19507,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4443588899267590720}
   - component: {fileID: 8930870224852880689}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Door_1.1x2.0_Hinge_A1_R_a
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19743,7 +19744,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4325328751352530962}
   - component: {fileID: 8817124740115758947}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Door_1.1x2.0_Ledge_B1_a
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20036,7 +20037,7 @@ GameObject:
   - component: {fileID: 8767538308459099791}
   - component: {fileID: 2958178417356780251}
   - component: {fileID: 4043225158369495125}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Door_Handle_A2_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20124,7 +20125,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5306111439053157129}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Door_1.1x2.0_A1_HingeR_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23419,7 +23420,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4808850371599896443}
-  m_Layer: 0
+  - component: {fileID: 7604356517589250214}
+  m_Layer: 7
   m_Name: Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23442,6 +23444,26 @@ Transform:
   - {fileID: 5785085932806030746}
   m_Father: {fileID: 5306111439053157129}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7604356517589250214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4808850371599896442}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07968fe44162fea48bd65b39c39adc56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Door
+  doorOpenSpeed: 500
+  UseDoors:
+  - Door: {fileID: 4808850371599896442}
+    CloseValue: 0
+    OpenValue: 88
+    isDoorOpen: 0
+    RotationOrigin: {fileID: 6558104920576433952}
+  door_in_use: 0
 --- !u!1 &4834429475878872450
 GameObject:
   m_ObjectHideFlags: 0
@@ -23996,7 +24018,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5718882379474190364}
   - component: {fileID: 650649819408398189}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Door_1.1x2.0_Frame_Hinge_A1_R_a
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27110,6 +27132,74 @@ LODGroup:
     renderers:
     - renderer: {fileID: 7859767050743457300}
   m_Enabled: 1
+--- !u!1 &5424025140772890069
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6264133223612317566}
+  - component: {fileID: 1733364932090873889}
+  - component: {fileID: 8104114056431845427}
+  m_Layer: 0
+  m_Name: IndoorTrigger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6264133223612317566
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5424025140772890069}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8723521903982928094}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1733364932090873889
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5424025140772890069}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 5, y: 3, z: 6.5}
+  m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &8104114056431845427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5424025140772890069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b291ffbbc481964ea30e0407ab9c1d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Indoortrigger
+  quarterViewCamera: {fileID: 0}
+  playerTag: Player
 --- !u!1 &5433884539935379162
 GameObject:
   m_ObjectHideFlags: 0
@@ -29375,7 +29465,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6418727490807090602}
   - component: {fileID: 2254606919557315291}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Door_Handle_A2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -30275,7 +30365,7 @@ GameObject:
   - component: {fileID: 2968117781645588642}
   - component: {fileID: 8380538679507874871}
   - component: {fileID: 2779882443241476069}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Door_1.1x2.0_Frame_A1_R_a_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -30999,7 +31089,7 @@ GameObject:
   - component: {fileID: 5866485626622195304}
   - component: {fileID: 1032665974250060718}
   - component: {fileID: 4579614977623188567}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Door_1.1x2.0_Ledge_B1_a_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -31934,7 +32024,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5785085932806030746}
   - component: {fileID: 1590578431816233707}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Door_1.1x2.0_A1_R_a
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -32086,7 +32176,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8295517722099182320}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Frame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35382,7 +35472,7 @@ GameObject:
   - component: {fileID: 9113639210870863369}
   - component: {fileID: 6240318600177293713}
   - component: {fileID: 1995088752404657558}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Door_1.1x2.0_Frame_A1_R_a_Colliders
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38069,7 +38159,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7444842984743765685}
   - component: {fileID: 2381131970516660676}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Door_1.1x2.0_Frame_A1_R_a
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38194,7 +38284,7 @@ GameObject:
   - component: {fileID: 4551087335434281773}
   - component: {fileID: 6823375010143187585}
   - component: {fileID: 4445326113932742349}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Door_1.1x2.0_A1_R_a_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39910,7 +40000,7 @@ GameObject:
   - component: {fileID: 5484035062519479405}
   - component: {fileID: 3283693633359967016}
   - component: {fileID: 7080199764926879389}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Door_1.1x2.0_Frame_Hinge_A1_R_a_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40440,7 +40530,7 @@ GameObject:
   - component: {fileID: 5156428988478346225}
   - component: {fileID: 7504783413549677685}
   - component: {fileID: 6361037163058860694}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Door_1.1x2.0_Hinge_A1_R_a_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41434,7 +41524,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8320705240775607606}
   - component: {fileID: 3828916192201404999}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Door_Handle_A2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42129,7 +42219,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5465806230892740076}
   - component: {fileID: 2912629423677869295}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Door_1.1x2.0_A1_R_a_Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42331,7 +42421,7 @@ GameObject:
   - component: {fileID: 1945101888473380539}
   - component: {fileID: 2595435243007483036}
   - component: {fileID: 6968431622120173353}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Door_1.1x2.0_Ledge_B1_a_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44301,7 +44391,8 @@ GameObject:
   - component: {fileID: 4446007505585519292}
   - component: {fileID: 2435478493536430080}
   - component: {fileID: 5603708073718600053}
-  m_Layer: 0
+  - component: {fileID: 6640605585245054838}
+  m_Layer: 7
   m_Name: Door_1.1x2.0_A1_R_a_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44380,6 +44471,27 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &6640605585245054838
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9139500066600366736}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.0560002, y: 1.9925681, z: 0.04000012}
+  m_Center: {x: 0.5320004, y: 1.0656043, z: -0.025000589}
 --- !u!1 &9141019613388115361
 GameObject:
   m_ObjectHideFlags: 0
@@ -45079,7 +45191,7 @@ GameObject:
   - component: {fileID: 2893430325068668397}
   - component: {fileID: 793121837715709755}
   - component: {fileID: 3306134070110504036}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Door_1.1x2.0_Hinge_A1_R_a_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
