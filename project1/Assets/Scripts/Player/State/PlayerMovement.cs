@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
     
     [Header("회전 속도")]
     [SerializeField] private float _rotateSpeed;
+    [SerializeField] private float _mouseRotateSpeed = 200f;
     
     private Rigidbody _rigidbody;
     Vector3 _movement = Vector3.zero;
@@ -25,9 +26,8 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
-        _rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
+        _rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
     }
-    
     private void FixedUpdate()
     {
         Debug.DrawRay(transform.position + Vector3.up, _movement * 3f, Color.red);
@@ -39,7 +39,7 @@ public class PlayerMovement : MonoBehaviour
     { 
         HandleMovement();
         bool nowRunning = Input.GetKey(KeyCode.LeftShift);
-        if(nowRunning != _prevIsMoving)
+        if(nowRunning != _prevRunning)
         {
             _prevRunning = nowRunning;
             _isRunning = nowRunning;
@@ -55,24 +55,27 @@ public class PlayerMovement : MonoBehaviour
     
     private void Rotate()
     {
-        if (!IsMoving) return;
-        
-        Quaternion targetRot = Quaternion.LookRotation(_movement);
+        if(!IsMoving) return;
 
-        Quaternion newRat = Quaternion.Slerp(
-            GetComponent<Rigidbody>().rotation,
-            targetRot,
-            _rotateSpeed * Time.fixedDeltaTime
-        );
-        
-        _rigidbody.MoveRotation(newRat);
+        Quaternion targetRot = Quaternion.LookRotation(_movement);
+        Quaternion newRot = Quaternion.Slerp(_rigidbody.rotation, targetRot, _rotateSpeed * Time.fixedDeltaTime);
+        _rigidbody.MoveRotation(newRot);
+
+        float mouseX = Input.GetAxis("Mouse X");
+
+        float angle = mouseX * _mouseRotateSpeed * Time.fixedDeltaTime;
+
+        Quaternion deltaRot = Quaternion.Euler(0f, angle, 0f);
+         _rigidbody.MoveRotation(_rigidbody.rotation * deltaRot);
     }
 
     private void Move()
     {
         if (!IsMoving) return;
 
-        Vector3 nextPos = _rigidbody.position + _movement * (_moveSpeed * Time.fixedDeltaTime);
+        float speed = _isRunning ? _runSpeed : _moveSpeed;
+
+        Vector3 nextPos = _rigidbody.position + _movement * (speed * Time.fixedDeltaTime);
         _rigidbody.MovePosition(nextPos);
     }
 

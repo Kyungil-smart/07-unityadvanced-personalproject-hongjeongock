@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 211365cda86770c409fcf2c76ec0b6bd, type: 3}
+  m_Name: LootTable_Stone
+  m_EditorClassIdentifier: Assembly-CSharp::LootTableDefinition
+  entries:
+  - dropPrefab: {fileID: 1712469483851906, guid: f4ca3028f0dc84b4aa4f33dfb80584ad, type: 3}
+    chance: 1
+    minAmount: 1
+    maxAmount: 2
+    scatterRadius: 0
+  - dropPrefab: {fileID: 1712469483851906, guid: d15486dd43bda414eabacc97d8ac7fed, type: 3}
+    chance: 0.25
+    minAmount: 1
+    maxAmount: 1
+    scatterRadius: 0
+  guaranteeAtLeastOne: 1

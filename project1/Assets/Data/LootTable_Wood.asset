@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 211365cda86770c409fcf2c76ec0b6bd, type: 3}
+  m_Name: LootTable_Wood
+  m_EditorClassIdentifier: Assembly-CSharp::LootTableDefinition
+  entries:
+  - dropPrefab: {fileID: 6869120032944847653, guid: 24a3e5b623597b44994326f107b1220d, type: 3}
+    chance: 1
+    minAmount: 1
+    maxAmount: 3
+    scatterRadius: 0
+  guaranteeAtLeastOne: 1
