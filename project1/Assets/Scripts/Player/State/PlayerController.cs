@@ -17,26 +17,29 @@ public class PlayerController : MonoBehaviour
 
     public event Action OnDeath;
     public event Action OnAttack;
+    public event Action<float> OnHPChanged;
     public bool IsDead { get; private set; }
+
+    private void Awake()
+    {
+        ResetHP();
+    }
 
     private void Update()
     {
-        if(IsDead)return;
+        if (IsDead) return;
         if (Input.GetMouseButtonDown(0))
         {
             Debug.Log("공격!");
             Attack();
         }
     }
-    private void Awake()
-    {
-        ResetHP();
-    }
 
     public void ResetHP()
     {
         _playerCurrentHp = _playerMaxHp;
         IsDead = false;
+        OnHPChanged?.Invoke(_playerCurrentHp);
     }
 
     public void TakeDamage(float damage)
@@ -44,18 +47,18 @@ public class PlayerController : MonoBehaviour
         if (IsDead) return;
 
         _playerCurrentHp -= damage;
+        _playerCurrentHp = Mathf.Max(0f, _playerCurrentHp);
+
+        OnHPChanged?.Invoke(_playerCurrentHp);
 
         if (_playerCurrentHp <= 0f)
-        {
-            _playerCurrentHp = 0f;
             Die();
-        }
     }
 
     public void Attack()
     {
-        if(IsDead) return;
-        if(Time.time <_nextAttackTime)return;
+        if (IsDead) return;
+        if (Time.time < _nextAttackTime) return;
         
         _nextAttackTime = Time.time + _playerATKTime;
         OnAttack?.Invoke();

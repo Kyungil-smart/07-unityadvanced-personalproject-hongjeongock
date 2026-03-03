@@ -13,6 +13,18 @@ PrefabInstance:
       value: Wood
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: f7a76ab4dba6bbf4184c778511a5545e, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: f7a76ab4dba6bbf4184c778511a5545e, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: f7a76ab4dba6bbf4184c778511a5545e, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: f7a76ab4dba6bbf4184c778511a5545e, type: 3}
       propertyPath: m_LocalPosition.x
       value: -88.62157
       objectReference: {fileID: 0}
@@ -101,5 +113,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2102d90e322496b409a1da3722ed50a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ResourcePickup
-  resource: {fileID: 0}
+  resource: {fileID: 11400000, guid: b4d1e87622b7b354391f8b660289e627, type: 2}
   amount: 1
+  inventoryItemPrefab: {fileID: 0}

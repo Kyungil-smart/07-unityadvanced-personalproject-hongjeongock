@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 33421041239846582}
   - component: {fileID: 23805762637930430}
   - component: {fileID: 6530830854963785862}
+  - component: {fileID: 2653748753138739749}
   m_Layer: 0
   m_Name: Stone
   m_TagString: Untagged
@@ -29,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0.08038087, y: -0.15300736, z: 0.4195431, w: 0.89112926}
   m_LocalPosition: {x: -12.27305, y: 0.00000011920932, z: 28.761024}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 4, y: 4, z: 4}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -112,3 +113,18 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.15
   m_Center: {x: 0.11347217, y: -0.07, z: 0.06}
+--- !u!114 &2653748753138739749
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1712469483851906}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2102d90e322496b409a1da3722ed50a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ResourcePickup
+  resource: {fileID: 11400000, guid: 4c02c384ce0633a4e89b19cc7d1af548, type: 2}
+  amount: 1
+  inventoryItemPrefab: {fileID: 0}
