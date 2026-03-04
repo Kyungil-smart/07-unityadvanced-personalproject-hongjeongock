@@ -1,10 +1,11 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class HouseInteractable : MonoBehaviour
 {
     [SerializeField] private HouseSystem houseSystem;
-    [SerializeField] private UpgradePanelUI upgradePanel;
     [SerializeField] private GameObject eHintUI;
+    [SerializeField] private HouseUpgradeUI houseUpgradeUI;
 
     private bool _playerInRange;
 
@@ -12,10 +13,10 @@ public class HouseInteractable : MonoBehaviour
     {
         if (!_playerInRange) return;
 
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.Tab))
         {
-            Debug.Log("[E] pressed - opening panel");
-            upgradePanel.Open(houseSystem);
+            if (houseUpgradeUI != null) 
+                houseUpgradeUI.Show();
         }
     }
 
@@ -38,4 +39,6 @@ public class HouseInteractable : MonoBehaviour
         _playerInRange = false;
         if (eHintUI != null) eHintUI.SetActive(false);
     }
+
+   
 }

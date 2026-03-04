@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: LootTable_Coin
   m_EditorClassIdentifier: Assembly-CSharp::LootTableDefinition
   entries:
-  - dropPrefab: {fileID: 919132149155446097, guid: 485c45581a8429a46be022d8ef1dcd7f, type: 3}
+  - dropPrefab: {fileID: 919132149155446097, guid: 56156eef6c8ce6d4f9d5fdc028e238cc, type: 3}
     chance: 1
     minAmount: 1
     maxAmount: 3
