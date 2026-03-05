@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -13,8 +14,13 @@ public class EnemyController : MonoBehaviour, IDamageable
 
     [Header("이동")]
     [SerializeField] private float _moveSpeed = 2.5f; // 이동 속도
+    [SerializeField] private float _runSpeed = 4.5f; // 달리기 속도 플레이어 보다 좀... (많이)느리게..
     [SerializeField] private float _rotateSpeed = 720f; // 회전 속도
     [SerializeField] private float _stopDistance = 1.2f; // 타겟과의 최소 거리(거리보다 가까워지면 멈춤)
+
+    [Header("감지")]
+    [SerializeField] private float _detctionRange = 20f;
+    [SerializeField] private float _runRange = 8f;
 
     [Header("전투")]
     [SerializeField] private float _maxHP = 50f; // 최대 체력
@@ -23,15 +29,21 @@ public class EnemyController : MonoBehaviour, IDamageable
     [SerializeField] private float _attackCooldown = 1.5f; // 공격 쿨타임
 
     private Rigidbody _rb;
+    private Animator _animator;
     private float _currentHP;
     private float _nextAttackTime;
     private bool _isDie;
 
-    public event System.Action OnDeath; // 사망 시 이벤트
+    private static readonly int HashSpeed = Animator.StringToHash("Speed");
+    private static readonly int HashIsAttack = Animator.StringToHash("isAttack");
+    private static readonly int HashIsDead = Animator.StringToHash("isDead");
+    
+    public event System.Action OnDeath;
 
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
+        _animator = GetComponent<Animator>();
         _currentHP = _maxHP;
 
         // 좀비기 넘어지지 않도록 회전 고정
@@ -51,35 +63,43 @@ public class EnemyController : MonoBehaviour, IDamageable
 
     private void FixedUpdate()
     {
-        if(_isDie)return;
+        if(_isDie) return;
         if (target == null) return;
 
         float distance = Vector3.Distance(transform.position, target.position);
 
         RotateToTarget();
 
-        if(distance <= _attackRange)
+        if (distance <= _attackRange)
         {
             StopMove();
             TryAttack();
+            SetAnimatorSpeed(0f);
         }
-        else if (distance > _stopDistance)
+        else if (distance <= _detctionRange && distance > _stopDistance) // ✅ 여기
         {
-            MoveToTarget();
+            bool shouldRun = distance <= _runRange;
+            float speed = shouldRun ? _runSpeed : _moveSpeed;
+
+            MoveToTarget(speed);
+            SetAnimatorSpeed(shouldRun ? 1f : 0.3f);
+            SetAttack(false);
         }
         else
         {
             StopMove();
+            SetAnimatorSpeed(0f);
+            SetAttack(false);
         }
     }
 
-    private void MoveToTarget()
+    private void MoveToTarget(float speed)
     {
         Vector3 dir = (target.position - transform.position);
         dir.y = 0f;
         dir = dir.normalized;
 
-        Vector3 nextPosition = _rb.position + dir * _moveSpeed * Time.fixedDeltaTime;
+        Vector3 nextPosition = _rb.position + dir * speed * Time.fixedDeltaTime;
         _rb.MovePosition(nextPosition);
     }
 
@@ -96,14 +116,20 @@ public class EnemyController : MonoBehaviour, IDamageable
         if (dir.sqrMagnitude < 0.001f) return;
 
         Quaternion lookRotation = Quaternion.LookRotation(dir);
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, lookRotation, _rotateSpeed * _rotateSpeed * Time.fixedDeltaTime);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, lookRotation, _rotateSpeed * Time.fixedDeltaTime);
     }
 
     private void TryAttack()
     {
-        if (Time.time < _nextAttackTime) return;
+        if (Time.time < _nextAttackTime)
+        {
+            SetAttack(false);
+            return;
+        }
 
        _nextAttackTime = Time.time + _attackCooldown;
+       
+       SetAttack(true);
 
         if (target.TryGetComponent<IDamageable>(out var damageable))
         {
@@ -133,4 +159,30 @@ public class EnemyController : MonoBehaviour, IDamageable
 
         Destroy(gameObject);
     }
+
+    private void SetAnimatorSpeed(float speed)
+    {
+        _animator?.SetFloat(HashSpeed, speed);
+    }
+
+    private void SetAttack(bool value)
+    {
+        _animator?.SetBool(HashIsAttack,  value);
+    }
+#if UNITY_EDITOR
+    private void OnDrawGizmosSelected()
+    {
+        // 감지 범위
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, _moveSpeed);
+
+        // 뛰기 범위
+        Gizmos.color = new Color(1f, 0.5f, 0f);
+        Gizmos.DrawWireSphere(transform.position, _runRange);
+
+        // 공격 범위
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, _attackRange);
+    }
+#endif
 }

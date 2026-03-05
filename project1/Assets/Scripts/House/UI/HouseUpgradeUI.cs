@@ -50,7 +50,7 @@ public class HouseUpgradeUI : MonoBehaviour
 
     private void OnDisable()
     {
-        root = uiDocument.rootVisualElement;
+        if (root == null) return;
         
         root.Q<Button>("close-btn").clicked -= OnClose;
 

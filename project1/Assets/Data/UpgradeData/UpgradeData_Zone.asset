@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff9f07cddcddfec44933e3e313fdf363, type: 3}
   m_Name: UpgradeData_Zone
   m_EditorClassIdentifier: Assembly-CSharp::UpgradeItemData
-  itemName: 
-  icon: {fileID: 0}
+  itemName: "\uC548\uC804 \uAD6C\uC5ED"
+  icon: {fileID: 21300000, guid: 233aae5f776cd6c4b8fd660ed3389e33, type: 3}
   maxLevel: 3
-  woodResource: {fileID: 0}
-  stoneResource: {fileID: 0}
-  ironResource: {fileID: 0}
-  coinResource: {fileID: 0}
-  woodCost: 
-  stoneCost: 
-  ironCost: 
-  coinCost: 
+  woodResource: {fileID: 11400000, guid: b4d1e87622b7b354391f8b660289e627, type: 2}
+  stoneResource: {fileID: 11400000, guid: 4c02c384ce0633a4e89b19cc7d1af548, type: 2}
+  ironResource: {fileID: 11400000, guid: a750db64b4573a845a5913ecb3ded49e, type: 2}
+  coinResource: {fileID: 11400000, guid: 255670b8ed66b884796ad7ddb3fe9f11, type: 2}
+  woodCost: 3200000050000000
+  stoneCost: 1400000032000000
+  ironCost: 0d0000001c000000
+  coinCost: 64000000c8000000

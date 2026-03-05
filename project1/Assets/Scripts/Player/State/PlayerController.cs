@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IDamageable
 {
     [Header("플레이어 최대 체력")]
     [SerializeField] public float _playerMaxHp;
@@ -10,8 +10,12 @@ public class PlayerController : MonoBehaviour
     
     [Header("플레이어 공격력")]
     [SerializeField] public float _playerDamage;
+    
     [Header("플레이어 공격 쿨타임")]
     [SerializeField] public float _playerATKTime;
+    
+    [Header("플레이어 공격 범위")]
+    [SerializeField] public float _playerAttackRange = 2f;
 
     private float _nextAttackTime;
 
@@ -42,7 +46,7 @@ public class PlayerController : MonoBehaviour
         OnHPChanged?.Invoke(_playerCurrentHp);
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, Vector3 hitPoint)
     {
         if (IsDead) return;
 
@@ -59,9 +63,23 @@ public class PlayerController : MonoBehaviour
     {
         if (IsDead) return;
         if (Time.time < _nextAttackTime) return;
-        
+    
         _nextAttackTime = Time.time + _playerATKTime;
         OnAttack?.Invoke();
+
+        Collider[] hits = Physics.OverlapSphere(transform.position, _playerAttackRange);
+        Debug.Log($"공격 범위 내 오브젝트 수: {hits.Length}"); // ✅ 추가
+
+        foreach (var col in hits)
+        {
+            if (col.gameObject == gameObject) continue;
+            Debug.Log($"감지된 오브젝트: {col.gameObject.name}"); // ✅ 추가
+        
+            if (col.TryGetComponent<IDamageable>(out var damageable))
+            {
+                damageable.TakeDamage(_playerDamage, col.transform.position);
+            }
+        }
     }
 
     private void Die()
