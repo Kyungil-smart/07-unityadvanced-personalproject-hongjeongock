@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class ResourceHUD : MonoBehaviour
 {
@@ -7,50 +8,33 @@ public class ResourceHUD : MonoBehaviour
     [SerializeField] private ResourceInventory inventory;
     [SerializeField] private ResourceDefinition[] definitions;
 
-    [Header("UI")]
-    [SerializeField] private Transform contentRoot;
-    [SerializeField] private ResourceRowUI rowPrefab;
-
-    private readonly Dictionary<string, ResourceRowUI> _rows = new();
-
-    private void Awake()
-    {
-        Build();
-    }
+    [Header("UI Document")]
+    [SerializeField] private UIDocument uiDocument;
 
     private void OnEnable()
     {
         if (inventory != null)
-            inventory.OnChanged += HandleChanged;
+            inventory.OnChanged += Refresh;
+        Refresh();
     }
 
     private void OnDisable()
     {
         if (inventory != null)
-            inventory.OnChanged -= HandleChanged;
+            inventory.OnChanged -= Refresh;
     }
 
-    private void Build()
+    private void Refresh()
     {
-        if (contentRoot == null || rowPrefab == null || inventory == null) return;
-
-        foreach (Transform child in contentRoot)
-            Destroy(child.gameObject);
-
-        _rows.Clear();
+        if (uiDocument == null || inventory == null) return;
+        var root = uiDocument.rootVisualElement;
 
         foreach (var def in definitions)
         {
             if (def == null) continue;
-
-            var row = Instantiate(rowPrefab, contentRoot);
-            row.Bind(def, inventory.GetAmount(def));
-            _rows[def.id] = row;
+            var label = root.Q<Label>("res-" + def.id);
+            if (label != null)
+                label.text = inventory.GetAmount(def).ToString();
         }
-    }
-
-    private void HandleChanged()
-    {
-        Build();
     }
 }

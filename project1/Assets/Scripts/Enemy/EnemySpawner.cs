@@ -29,20 +29,30 @@ public class EnemySpawner : MonoBehaviour
 
     private void TrySpawn()
     {
-        Vector2 randomCircle = Random.insideUnitCircle * _spawnRadius;
-
-        Vector3 spawnPos = new Vector3(randomCircle.x, 0f, randomCircle.y);
-
-        if(_baseCenter != null)
+        const int maxAttempts = 10;
+    
+        for (int i = 0; i < maxAttempts; i++)
         {
-           float distanceToBase = Vector3.Distance(spawnPos, _baseCenter.position);
-
-              if (distanceToBase < _baseSafeRadius)
-                return;
+            Vector2 randomCircle = Random.insideUnitCircle * _spawnRadius;
+            
+            Vector3 spawnPos = transform.position + new Vector3(randomCircle.x, 0f, randomCircle.y);
+    
+            if (_baseCenter != null)
+            {
+                float distanceToBase = Vector3.Distance(spawnPos, _baseCenter.position);
+                if (distanceToBase < _baseSafeRadius)
+                    continue;
+            }
+            
+            if (Physics.Raycast(spawnPos + Vector3.up * 50f, Vector3.down, out RaycastHit hit, 100f))
+            {
+                spawnPos = hit.point;
+            }
+    
+            Instantiate(_enemyPrefab, spawnPos, Quaternion.identity);
+            _currentAlive++;
+            return;
         }
-
-        GameObject enemy = Instantiate(_enemyPrefab, spawnPos, Quaternion.identity);
-        _currentAlive++;
     }
 
     #if UNITY_EDITOR
