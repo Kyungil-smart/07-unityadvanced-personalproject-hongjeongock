@@ -10,6 +10,9 @@ public class HouseUpgradeUI : MonoBehaviour
     
     [Header("ResourceInventory 참조")]
     public ResourceInventory inventory;
+    
+    [Header("하우스 시스템 참조")]
+    [SerializeField] private HouseSystem houseSystem;
 
     [Header("업그레이드 아이템 데이터")]
     public UpgradeItemData houseData;
@@ -27,6 +30,10 @@ public class HouseUpgradeUI : MonoBehaviour
     {
         uiDocument = GetComponent<UIDocument>();
         root = uiDocument.rootVisualElement;
+
+        if (houseSystem == null)
+            houseSystem = FindFirstObjectByType<HouseSystem>();
+
         Debug.Log("Awake root: " + root);
     }
 
@@ -150,12 +157,32 @@ public class HouseUpgradeUI : MonoBehaviour
     }
     private void OnUpgrade(int idx)
     {
+        if (idx == 0)
+        {
+            if (houseSystem == null)
+                houseSystem = FindFirstObjectByType<HouseSystem>();
+
+            if (houseSystem == null)
+            {
+                Debug.LogError("[HouseUpgradeUI] HouseSystem을 찾을 수 없습니다.");
+                return;
+            }
+
+            bool ok = houseSystem.TryUpgradeHouse();
+            Debug.Log($"[HouseUpgrade] 집 크기 TryUpgradeHouse => {ok}, CurrentLevel={houseSystem.CurrentLevel}");
+            
+            levels[0] = Mathf.Max(1, houseSystem.CurrentLevel + 1); 
+
+            RefreshAll();
+            return;
+        }
+        
         int lv    = levels[idx];
         int maxLv = items[idx].maxLevel;
         if (lv >= maxLv) return;
 
         int costIdx = lv - 1;
-        if(items[idx].woodCost.Length == 0) return;
+        if (items[idx].woodCost.Length == 0) return;
         if (!CanAfford(idx, costIdx)) return;
 
         var data = items[idx];
@@ -167,6 +194,8 @@ public class HouseUpgradeUI : MonoBehaviour
         levels[idx]++;
 
         Debug.Log($"[HouseUpgrade] {data.itemName} Lv.{levels[idx]-1} → Lv.{levels[idx]}");
+
+        RefreshAll();
     }
 
     private void RefreshResourceBar()

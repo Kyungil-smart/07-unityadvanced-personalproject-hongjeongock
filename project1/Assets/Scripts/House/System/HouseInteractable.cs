@@ -4,11 +4,18 @@ using UnityEngine.UIElements;
 public class HouseInteractable : MonoBehaviour
 {
     [SerializeField] private HouseSystem houseSystem;
-    [SerializeField] private GameObject eHintUI;
     [SerializeField] private HouseUpgradeUI houseUpgradeUI;
 
     private bool _playerInRange;
 
+    private void Awake()
+    {
+        if (houseSystem == null)
+            houseSystem = FindFirstObjectByType<HouseSystem>();
+
+        if (houseUpgradeUI == null)
+            houseUpgradeUI = FindFirstObjectByType<HouseUpgradeUI>(FindObjectsInactive.Include);
+    }
     private void Update()
     {
         if (!_playerInRange) return;
@@ -27,7 +34,6 @@ public class HouseInteractable : MonoBehaviour
         if (!other.CompareTag("Player")) return;
 
         _playerInRange = true;
-        if (eHintUI != null) eHintUI.SetActive(true);
     }
 
     private void OnTriggerExit(Collider other)
@@ -37,7 +43,6 @@ public class HouseInteractable : MonoBehaviour
         if (!other.CompareTag("Player")) return;
 
         _playerInRange = false;
-        if (eHintUI != null) eHintUI.SetActive(false);
     }
 
    

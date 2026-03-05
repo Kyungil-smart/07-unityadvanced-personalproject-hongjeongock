@@ -12,13 +12,15 @@ public class EnemyLootDropper : MonoBehaviour
     
     public void DropLoot()
     {
+        Debug.Log("DropLoot 호출됨");
+
         if (_dropped) return;
         _dropped = true;
 
         if (lootTable == null || lootTable.entries == null || lootTable.entries.Length == 0)
             return;
 
-        Vector3 basePos = dropPoint != null ? dropPoint.position : transform.position;
+        Vector3 basePos = dropPoint != null ? dropPoint.position : transform.position + Vector3.up * 0.5f;
 
         bool droppedAny = false;
 
@@ -38,7 +40,7 @@ public class EnemyLootDropper : MonoBehaviour
                 droppedAny = true;
             }
         }
-        
+
         if (lootTable.guaranteeAtLeastOne && !droppedAny)
         {
             var first = lootTable.entries[0];

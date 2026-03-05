@@ -45,8 +45,7 @@ public class EnemyController : MonoBehaviour, IDamageable
         _rb = GetComponent<Rigidbody>();
         _animator = GetComponent<Animator>();
         _currentHP = _maxHP;
-
-        // 좀비기 넘어지지 않도록 회전 고정
+        
         _rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
     }
 
@@ -76,7 +75,7 @@ public class EnemyController : MonoBehaviour, IDamageable
             TryAttack();
             SetAnimatorSpeed(0f);
         }
-        else if (distance <= _detctionRange && distance > _stopDistance) // ✅ 여기
+        else if (distance <= _detctionRange && distance > _stopDistance)
         {
             bool shouldRun = distance <= _runRange;
             float speed = shouldRun ? _runSpeed : _moveSpeed;
@@ -145,6 +144,7 @@ public class EnemyController : MonoBehaviour, IDamageable
 
         if (_currentHP <= 0f)
         {
+            Debug.Log("좀비 사망!");
             Die();
         }
     }
@@ -154,10 +154,11 @@ public class EnemyController : MonoBehaviour, IDamageable
         if(_isDie) return;
 
         _isDie = true;
+        GetComponent<EnemyLootDropper>()?.DropLoot();
 
         OnDeath?.Invoke();
 
-        Destroy(gameObject);
+        Destroy(gameObject, 0.1f);
     }
 
     private void SetAnimatorSpeed(float speed)
@@ -172,15 +173,12 @@ public class EnemyController : MonoBehaviour, IDamageable
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected()
     {
-        // 감지 범위
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, _moveSpeed);
-
-        // 뛰기 범위
+        
         Gizmos.color = new Color(1f, 0.5f, 0f);
         Gizmos.DrawWireSphere(transform.position, _runRange);
-
-        // 공격 범위
+        
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, _attackRange);
     }
