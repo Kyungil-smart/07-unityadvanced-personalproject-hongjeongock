@@ -3,9 +3,6 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-
-// 좀비 1개체의 모든 동작을 관리하는 스크립트
-// 플레이어 추적, 공격, 피격, 사망 등
 [RequireComponent(typeof(Rigidbody))]
 public class EnemyController : MonoBehaviour, IDamageable
 {
@@ -53,7 +50,6 @@ public class EnemyController : MonoBehaviour, IDamageable
     {
         if(target == null)
         {
-            // 플레이어 태그로 타겟 자동 설정
             GameObject player = GameObject.FindGameObjectWithTag("Player");
             if (player != null)
                 target = player.transform;

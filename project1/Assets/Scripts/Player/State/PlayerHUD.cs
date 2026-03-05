@@ -50,7 +50,7 @@ public class PlayerHUD : MonoBehaviour
             playerController.OnHPChanged += UpdateHP;
 
         UpdateResourceUI();
-        UpdateHP(MaxHp);
+        UpdateHP(MaxHp, MaxHp);
     }
 
     private void OnDestroy()
@@ -61,7 +61,7 @@ public class PlayerHUD : MonoBehaviour
             playerController.OnHPChanged -= UpdateHP;
     }
 
-    private void UpdateHP(float currentHP)
+    private void UpdateHP(float currentHP, float maxHP)
     {
         float ratio = Mathf.Clamp01(currentHP / MaxHp);
         hpFill.style.width = Length.Percent(ratio * 100f);

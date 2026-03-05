@@ -27,7 +27,6 @@ public class MainMenuController : MonoBehaviour
 
     private void Start()
     {
-        // 메인 메뉴 바인딩
         _mainRoot = mainMenuDocument.rootVisualElement;
         _nicknameInput = _mainRoot.Q<TextField>("nickname-input");
 
@@ -35,8 +34,7 @@ public class MainMenuController : MonoBehaviour
         _mainRoot.Q<Button>("btn-settings").clicked += OnSettingsClicked;
         _mainRoot.Q<Button>("btn-credits").clicked += OnCreditsClicked;
         _mainRoot.Q<Button>("btn-quit").clicked += OnQuitClicked;
-
-        // 설정 UI 바인딩 (1회만)
+        
         _settingsRoot = settingsDocument.rootVisualElement;
 
         _tabSound     = _settingsRoot.Q<Button>("tab-sound");
@@ -70,8 +68,7 @@ public class MainMenuController : MonoBehaviour
                 if (_labelSFX != null)
                     _labelSFX.text = Mathf.RoundToInt(e.newValue * 100).ToString();
             });
-
-        // 시작 상태
+        
         _settingsRoot.style.display = DisplayStyle.None;
 
         if (creditObject != null)
@@ -100,8 +97,7 @@ public class MainMenuController : MonoBehaviour
     private void OnSettingsClicked()
     {
         _settingsRoot.style.display = DisplayStyle.Flex;
-
-        // 열 때마다 상태 초기화(꼬임 방지)
+        
         SwitchTab("sound");
         RefreshSoundLabels();
     }

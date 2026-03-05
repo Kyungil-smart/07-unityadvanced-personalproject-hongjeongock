@@ -16,12 +16,14 @@ public class PlayerController : MonoBehaviour, IDamageable
     
     [Header("플레이어 공격 범위")]
     [SerializeField] public float _playerAttackRange = 2f;
+    
+    [SerializeField] private GameOverUI _gameOverUI;
 
     private float _nextAttackTime;
 
     public event Action OnDeath;
     public event Action OnAttack;
-    public event Action<float> OnHPChanged;
+    public event Action<float, float> OnHPChanged;
     public bool IsDead { get; private set; }
 
     private void Awake()
@@ -43,7 +45,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         _playerCurrentHp = _playerMaxHp;
         IsDead = false;
-        OnHPChanged?.Invoke(_playerCurrentHp);
+        OnHPChanged?.Invoke(_playerCurrentHp,  _playerMaxHp);
     }
 
     public void TakeDamage(float damage, Vector3 hitPoint)
@@ -53,7 +55,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         _playerCurrentHp -= damage;
         _playerCurrentHp = Mathf.Max(0f, _playerCurrentHp);
 
-        OnHPChanged?.Invoke(_playerCurrentHp);
+        OnHPChanged?.Invoke(_playerCurrentHp,  _playerMaxHp);
 
         if (_playerCurrentHp <= 0f)
             Die();
@@ -81,11 +83,33 @@ public class PlayerController : MonoBehaviour, IDamageable
             }
         }
     }
+    
+    public void Heal(float amount)
+    {
+        if (amount <= 0f) return;
+        
+        float prevHp = _playerCurrentHp;
+        
+        _playerCurrentHp = Mathf.Min(_playerCurrentHp + amount, _playerMaxHp);
+
+        if (!Mathf.Approximately(prevHp, _playerCurrentHp))
+        {
+            OnHPChanged?.Invoke(_playerCurrentHp, _playerMaxHp);
+        }
+    }
 
     private void Die()
     {
         if (IsDead) return;
         IsDead = true;
+        if (_gameOverUI != null)
+        {
+            _gameOverUI.Show();
+        }
+        else
+        {
+            Debug.LogError("[PlayerController] GameOverUI가 연결되지 않았습니다! PlayerController 인스펙터에 할당하세요.");
+        }
         OnDeath?.Invoke();
     }
 }

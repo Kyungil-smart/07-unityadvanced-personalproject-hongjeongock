@@ -28,13 +28,8 @@ public class HouseUpgradeUI : MonoBehaviour
     
     private void Awake()
     {
-        uiDocument = GetComponent<UIDocument>();
         root = uiDocument.rootVisualElement;
-
-        if (houseSystem == null)
-            houseSystem = FindFirstObjectByType<HouseSystem>();
-
-        Debug.Log("Awake root: " + root);
+        root.style.display = DisplayStyle.None;
     }
 
     private void OnEnable()
@@ -210,9 +205,12 @@ public class HouseUpgradeUI : MonoBehaviour
     {
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
-        root = uiDocument.rootVisualElement;
-        if (root == null) { Debug.Log("여전히 null"); return; }
+
+        if (root == null)
+            root = uiDocument.rootVisualElement;
+
         root.style.display = DisplayStyle.Flex;
+
         RefreshAll();
     }
 
@@ -220,7 +218,10 @@ public class HouseUpgradeUI : MonoBehaviour
     {
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-        if (root == null) return;
+
+        if (root == null)
+            root = uiDocument.rootVisualElement;
+
         root.style.display = DisplayStyle.None;
     }
 }
