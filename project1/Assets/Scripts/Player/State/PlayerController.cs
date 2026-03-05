@@ -68,12 +68,12 @@ public class PlayerController : MonoBehaviour, IDamageable
         OnAttack?.Invoke();
 
         Collider[] hits = Physics.OverlapSphere(transform.position, _playerAttackRange);
-        Debug.Log($"공격 범위 내 오브젝트 수: {hits.Length}"); // ✅ 추가
+        Debug.Log($"공격 범위 내 오브젝트 수: {hits.Length}");
 
         foreach (var col in hits)
         {
             if (col.gameObject == gameObject) continue;
-            Debug.Log($"감지된 오브젝트: {col.gameObject.name}"); // ✅ 추가
+            Debug.Log($"감지된 오브젝트: {col.gameObject.name}");
         
             if (col.TryGetComponent<IDamageable>(out var damageable))
             {
