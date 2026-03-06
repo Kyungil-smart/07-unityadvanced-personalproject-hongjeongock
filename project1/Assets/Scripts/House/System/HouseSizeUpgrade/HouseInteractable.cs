@@ -19,12 +19,6 @@ public class HouseInteractable : MonoBehaviour
     private void Update()
     {
         if (!_playerInRange) return;
-
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            if (houseUpgradeUI != null) 
-                houseUpgradeUI.Show();
-        }
     }
 
     private void OnTriggerEnter(Collider other)

@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -17,6 +16,11 @@ public class PauseController : MonoBehaviour
     
     [Header("입력 게이트")]
     [SerializeField] private PlayerInputGate inputGate;
+    
+    [Header("리스폰")]
+    [SerializeField] private PlayerRespawn playerRespawn;
+
+    private Button _btnRespawn;
 
     private VisualElement _pauseRoot;
     private VisualElement _settingsRoot;
@@ -59,19 +63,23 @@ public class PauseController : MonoBehaviour
         var btnSettings = _pauseRoot.Q<Button>("btn-settings");
         var btnMainMenu = _pauseRoot.Q<Button>("btn-mainmenu");
         var btnQuit     = _pauseRoot.Q<Button>("btn-quit");
+        _btnRespawn     = _pauseRoot.Q<Button>("btn-respawn");
 
         if (btnResume == null)   Debug.LogError("btn-resume 못 찾음");
         if (btnSettings == null) Debug.LogError("btn-settings 못 찾음");
         if (btnMainMenu == null) Debug.LogError("btn-mainmenu 못 찾음");
         if (btnQuit == null)     Debug.LogError("btn-quit 못 찾음");
+        if (_btnRespawn == null) Debug.LogError("btn-respawn 못 찾음");
 
         if (btnResume != null)   btnResume.clicked += Resume;
         if (btnSettings != null) btnSettings.clicked += ToggleSettings;
         if (btnMainMenu != null) btnMainMenu.clicked += GoMainMenu;
         if (btnQuit != null)     btnQuit.clicked += QuitGame;
+        if (_btnRespawn != null) _btnRespawn.clicked += OnClickRespawn;
         
         _pauseRoot.style.display = DisplayStyle.None;
-        if (_settingsRoot != null) _settingsRoot.style.display = DisplayStyle.None;
+        if (_settingsRoot != null)
+            _settingsRoot.style.display = DisplayStyle.None;
     }
 
     private void Update()
@@ -102,6 +110,9 @@ public class PauseController : MonoBehaviour
         Time.timeScale = 1f;
         GameIsPaused = false;
 
+        if (_settingsRoot != null)
+            _settingsRoot.style.display = DisplayStyle.None;
+
         inputGate?.Unlock();
     }
 
@@ -115,6 +126,20 @@ public class PauseController : MonoBehaviour
             isOpen ? DisplayStyle.None : DisplayStyle.Flex;
     }
 
+    private void OnClickRespawn()
+    {
+        Debug.Log("리스폰 버튼 클릭됨");
+
+        if (playerRespawn == null)
+        {
+            Debug.LogWarning("PauseController: playerRespawn이 연결되지 않았습니다.");
+            return;
+        }
+
+        playerRespawn.RespawnToSafePoint();
+        Resume();
+    }
+
     public void GoMainMenu()
     {
         Time.timeScale = 1f;
@@ -125,11 +150,9 @@ public class PauseController : MonoBehaviour
     private void QuitGame()
     {
 #if UNITY_EDITOR
-        
         UnityEditor.EditorApplication.isPlaying = false;
 #else
-
-    Application.Quit();
+        Application.Quit();
 #endif
     }
 }

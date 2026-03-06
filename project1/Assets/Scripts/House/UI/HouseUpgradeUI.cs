@@ -26,6 +26,21 @@ public class HouseUpgradeUI : MonoBehaviour
     private UpgradeItemData[] items;
     private string[] ids = { "house", "tower", "heal", "zone" };
     
+    private void Update()
+    {
+        if (!Input.GetKeyDown(KeyCode.Tab)) return;
+
+        if (root == null)
+            root = uiDocument.rootVisualElement;
+
+        bool actuallyVisible = root.style.display == DisplayStyle.Flex;
+
+        if (actuallyVisible)
+            Hide();
+        else
+            Show();
+    }
+    
     private void Awake()
     {
         root = uiDocument.rootVisualElement;
