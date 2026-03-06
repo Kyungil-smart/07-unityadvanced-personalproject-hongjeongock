@@ -30,6 +30,13 @@ public class EnemyController : MonoBehaviour, IDamageable
     private float _currentHP;
     private float _nextAttackTime;
     private bool _isDie;
+    
+    [Header("사운드")]
+    [SerializeField] private AudioSource _idleAudioSource;
+    [SerializeField] private AudioSource _attackAudioSource;
+    [SerializeField] private AudioClip _idleClip;
+    [SerializeField] private AudioClip _attackClip;
+    [SerializeField] private AudioClip _deathClip;
 
     private static readonly int HashSpeed = Animator.StringToHash("Speed");
     private static readonly int HashIsAttack = Animator.StringToHash("isAttack");
@@ -44,6 +51,10 @@ public class EnemyController : MonoBehaviour, IDamageable
         _currentHP = _maxHP;
         
         _rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+        
+        _idleAudioSource.spatialBlend = 2f; 
+        _idleAudioSource.maxDistance = 15f;     
+        _idleAudioSource.rolloffMode = AudioRolloffMode.Linear;
     }
 
     private void Start()
@@ -54,6 +65,10 @@ public class EnemyController : MonoBehaviour, IDamageable
             if (player != null)
                 target = player.transform;
         }
+        
+        _idleAudioSource.clip = _idleClip;
+        _idleAudioSource.loop = true;
+        _idleAudioSource.Play();
     }
 
     private void FixedUpdate()
@@ -126,10 +141,11 @@ public class EnemyController : MonoBehaviour, IDamageable
        
        SetAttack(true);
 
-        if (target.TryGetComponent<IDamageable>(out var damageable))
-        {
-            damageable.TakeDamage(_attackDamage, transform.position);
-        }
+       if (target.TryGetComponent<IDamageable>(out var damageable))
+       {
+           damageable.TakeDamage(_attackDamage, transform.position);
+           _attackAudioSource.PlayOneShot(_attackClip);
+       }
     }
 
     public void TakeDamage(float damage, Vector3 hitPoint)
@@ -150,6 +166,11 @@ public class EnemyController : MonoBehaviour, IDamageable
         if(_isDie) return;
 
         _isDie = true;
+
+        _idleAudioSource.Stop();
+        
+        _attackAudioSource.PlayOneShot(_deathClip);
+            
         GetComponent<EnemyLootDropper>()?.DropLoot();
 
         OnDeath?.Invoke();

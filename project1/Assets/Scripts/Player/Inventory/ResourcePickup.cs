@@ -22,7 +22,11 @@ public class ResourcePickup : MonoBehaviour
             item.gameObject.SetActive(false);
             inv.AddItem(item);
         }
-
+        if (resource.resourceType == ResourceType.Coin)
+            SoundManager.Instance.PlayCoinPickup();
+        else
+        SoundManager.Instance.PlayItemPickup();
+        
         Destroy(gameObject);
     }
 }

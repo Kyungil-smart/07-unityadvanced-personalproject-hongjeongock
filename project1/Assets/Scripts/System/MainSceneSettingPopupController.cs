@@ -5,6 +5,7 @@ public class MainSceneSettingPopupController : MonoBehaviour
 {
     [Header("연결")]
     [SerializeField] private UIDocument settingsDocument;
+    [SerializeField] private SettingsSoundUI settingsSoundUI;
 
     private VisualElement _root;
 
@@ -23,6 +24,33 @@ public class MainSceneSettingPopupController : MonoBehaviour
 
     private bool _bound;
 
+    public void Open()
+    {
+        var _root = GetComponent<UIDocument>()?.rootVisualElement;
+        if (_root != null)
+            _root.style.display = DisplayStyle.Flex;
+
+        
+        Debug.Log("[SettingsPopup] Open() 호출됨");
+        gameObject.SetActive(true);
+        Debug.Log("[SettingsPopup] SetActive(true) 완료");
+
+        if (settingsSoundUI != null)
+            settingsSoundUI.RefreshUI();
+        
+        var audioManager = Object.FindFirstObjectByType<AudioManager>();
+        if (audioManager != null)
+        {
+            var root = GetComponent<UIDocument>()?.rootVisualElement;
+            if (root != null)
+                foreach (var btn in root.Query<Button>().ToList())
+                {
+                    btn.clicked -= audioManager.PlayUIClick;
+                    btn.clicked += audioManager.PlayUIClick;
+                }
+        }
+    }
+    
     private void OnEnable()
     {
         BindOnce();
@@ -105,6 +133,8 @@ public class MainSceneSettingPopupController : MonoBehaviour
 
     private void Close()
     {
-        gameObject.SetActive(false);
+        var root = GetComponent<UIDocument>()?.rootVisualElement;
+        if (root != null)
+            root.style.display = DisplayStyle.None;
     }
 }

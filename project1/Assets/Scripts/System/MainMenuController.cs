@@ -11,6 +11,9 @@ public class MainMenuController : MonoBehaviour
 
     [Header("GameObject 연결")]
     [SerializeField] private GameObject creditObject;
+    
+    [Header("오디오")]
+    [SerializeField] private AudioManager audioManager;
 
     private VisualElement _mainRoot;
     private TextField _nicknameInput;
@@ -30,10 +33,29 @@ public class MainMenuController : MonoBehaviour
         _mainRoot = mainMenuDocument.rootVisualElement;
         _nicknameInput = _mainRoot.Q<TextField>("nickname-input");
 
-        _mainRoot.Q<Button>("btn-start").clicked += OnStartClicked;
-        _mainRoot.Q<Button>("btn-settings").clicked += OnSettingsClicked;
-        _mainRoot.Q<Button>("btn-credits").clicked += OnCreditsClicked;
-        _mainRoot.Q<Button>("btn-quit").clicked += OnQuitClicked;
+        _mainRoot.Q<Button>("btn-start").clicked += () =>
+        {
+            audioManager.PlayUIClick();
+            OnStartClicked();
+        };
+
+        _mainRoot.Q<Button>("btn-settings").clicked += () =>
+        {
+            audioManager.PlayUIClick();
+            OnSettingsClicked();
+        };
+
+        _mainRoot.Q<Button>("btn-credits").clicked += () =>
+        {
+            audioManager.PlayUIClick();
+            OnCreditsClicked();
+        };
+
+        _mainRoot.Q<Button>("btn-quit").clicked += () =>
+        {
+            audioManager.PlayUIClick();
+            OnQuitClicked();
+        };
         
         _settingsRoot = settingsDocument.rootVisualElement;
 
