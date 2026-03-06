@@ -11,4 +11,12 @@ public class ResourceDefinition : ScriptableObject
 
     [Header("아이콘")]
     public Sprite icon;
+    
+    [Header("리소스 타입")]
+    public ResourceType resourceType;
+}
+public enum ResourceType
+{
+    Default,
+    Coin
 }

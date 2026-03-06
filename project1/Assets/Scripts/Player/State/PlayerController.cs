@@ -54,6 +54,8 @@ public class PlayerController : MonoBehaviour, IDamageable
 
         _playerCurrentHp -= damage;
         _playerCurrentHp = Mathf.Max(0f, _playerCurrentHp);
+        
+        SoundManager.Instance.PlayPlayerHit();
 
         OnHPChanged?.Invoke(_playerCurrentHp,  _playerMaxHp);
 
@@ -68,6 +70,8 @@ public class PlayerController : MonoBehaviour, IDamageable
     
         _nextAttackTime = Time.time + _playerATKTime;
         OnAttack?.Invoke();
+        
+        SoundManager.Instance.PlayPlayerAttack();
 
         Collider[] hits = Physics.OverlapSphere(transform.position, _playerAttackRange);
         Debug.Log($"공격 범위 내 오브젝트 수: {hits.Length}");
