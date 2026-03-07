@@ -19,6 +19,9 @@ public class PauseController : MonoBehaviour
     
     [Header("리스폰")]
     [SerializeField] private PlayerRespawn playerRespawn;
+    
+    [Header("저장")]
+    [SerializeField] private SaveLoadController saveLoadController;
 
     private Button _btnRespawn;
 
@@ -63,6 +66,7 @@ public class PauseController : MonoBehaviour
         var btnSettings = _pauseRoot.Q<Button>("btn-settings");
         var btnMainMenu = _pauseRoot.Q<Button>("btn-mainmenu");
         var btnQuit     = _pauseRoot.Q<Button>("btn-quit");
+        var btnSaveAndClose = _settingsRoot?.Q<Button>("btn-apply");
         _btnRespawn     = _pauseRoot.Q<Button>("btn-respawn");
 
         if (btnResume == null)   Debug.LogError("btn-resume 못 찾음");
@@ -142,17 +146,37 @@ public class PauseController : MonoBehaviour
 
     public void GoMainMenu()
     {
+        SaveGameBeforeExit();
+        
         Time.timeScale = 1f;
         GameIsPaused = false;
         SceneManager.LoadScene("MainMenu");
     }
+    
+    private void SaveGameBeforeExit()
+    {
+        if (saveLoadController == null)
+            saveLoadController = FindFirstObjectByType<SaveLoadController>();
+
+        if (saveLoadController != null)
+        {
+            saveLoadController.SaveCurrentGame();
+            Debug.Log("메인 메뉴/게임 종료 전 자동 저장 완료");
+        }
+        else
+        {
+            Debug.LogWarning("PauseController: SaveLoadController를 찾지 못했습니다.");
+        }
+    }
 
     private void QuitGame()
     {
+        SaveGameBeforeExit();
+
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #else
-        Application.Quit();
+    Application.Quit();
 #endif
     }
 }
