@@ -67,11 +67,11 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         if (IsDead) return;
         if (Time.time < _nextAttackTime) return;
-    
+
         _nextAttackTime = Time.time + _playerATKTime;
         OnAttack?.Invoke();
-        
-        SoundManager.Instance.PlayPlayerAttack();
+
+        SoundManager.Instance?.PlayPlayerAttack();
 
         Collider[] hits = Physics.OverlapSphere(transform.position, _playerAttackRange);
         Debug.Log($"공격 범위 내 오브젝트 수: {hits.Length}");
@@ -80,7 +80,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             if (col.gameObject == gameObject) continue;
             Debug.Log($"감지된 오브젝트: {col.gameObject.name}");
-        
+
             if (col.TryGetComponent<IDamageable>(out var damageable))
             {
                 damageable.TakeDamage(_playerDamage, col.transform.position);
