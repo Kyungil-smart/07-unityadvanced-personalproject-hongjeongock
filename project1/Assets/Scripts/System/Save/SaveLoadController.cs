@@ -17,22 +17,22 @@ public class SaveLoadController : MonoBehaviour
     [Tooltip("플레이어 현재 체력 변수명")]
     [SerializeField] private string playerHpFieldName = "_playerCurrentHp";
 
+    [Header("플레이어 레벨 연결")]
+    [SerializeField] private PlayerLevelSystem playerLevelSystem;
+
     [Header("골드 연결")]
-    [Tooltip("골드 값을 가지고 있는 스크립트 컴포넌트")]
     [SerializeField] private MonoBehaviour goldTarget;
 
     [Tooltip("골드 변수명")]
     [SerializeField] private string goldFieldName = "gold";
 
     [Header("집 레벨 연결")]
-    [Tooltip("집 레벨을 가지고 있는 스크립트 컴포넌트")]
     [SerializeField] private MonoBehaviour houseLevelTarget;
 
     [Tooltip("집 레벨 변수명")]
     [SerializeField] private string houseLevelFieldName = "currentLevel";
 
     [Header("자원 연결")]
-    [Tooltip("반드시 ResourceInventory 컴포넌트를 넣으세요.")]
     [SerializeField] private ResourceInventory resourceInventoryTarget;
 
     [Header("자원 Definition")]
@@ -41,14 +41,13 @@ public class SaveLoadController : MonoBehaviour
     [SerializeField] private ResourceDefinition ironResource;
     [SerializeField] private ResourceDefinition coinResource;
 
-    [Header("추가 반영 메서드 (선택)")]
-    [Tooltip("로드 후 플레이어 체력 UI 갱신용 메서드 이름 (없으면 비워둠)")]
+    [Header("추가 반영 메서드")]
     [SerializeField] private string playerHpRefreshMethodName = "";
 
-    [Tooltip("로드 후 골드 UI 갱신용 메서드 이름 (없으면 비워둠)")]
+    [Tooltip("로드 후 골드 UI 갱신용 메서드 이름")]
     [SerializeField] private string goldRefreshMethodName = "";
 
-    [Tooltip("로드 후 집 외형 갱신용 메서드 이름 (없으면 비워둠)")]
+    [Tooltip("로드 후 집 외형 갱신용 메서드 이름")]
     [SerializeField] private string houseRefreshMethodName = "";
 
     [Header("디버그")]
@@ -63,10 +62,6 @@ public class SaveLoadController : MonoBehaviour
             StartCoroutine(LoadRoutine());
     }
 
-    /// <summary>
-    /// 씬 시작 후 잠깐 기다렸다가 저장 데이터를 로드합니다.
-    /// 다른 오브젝트 초기화가 끝난 뒤 적용하려고 코루틴 사용.
-    /// </summary>
     private IEnumerator LoadRoutine()
     {
         if (loadDelay > 0f)
@@ -77,10 +72,6 @@ public class SaveLoadController : MonoBehaviour
         LoadFromLastSelectedSlot();
     }
 
-    /// <summary>
-    /// 마지막 선택 슬롯 기준으로 저장 데이터를 불러옵니다.
-    /// 저장이 없으면 기본 시작 위치로 이동합니다.
-    /// </summary>
     public void LoadFromLastSelectedSlot()
     {
         int slot = PlayerPrefs.GetInt("LastSelectedSlot", 0);
@@ -104,10 +95,12 @@ public class SaveLoadController : MonoBehaviour
         ApplySaveData(data);
         Log($"로드 완료: 슬롯 {slot}");
     }
+    
+    private void OnApplicationQuit()
+    {
+        SaveCurrentGame();
+    }
 
-    /// <summary>
-    /// 저장 데이터를 실제 게임 오브젝트에 반영합니다.
-    /// </summary>
     public void ApplySaveData(SaveData data)
     {
         if (data == null)
@@ -118,14 +111,12 @@ public class SaveLoadController : MonoBehaviour
 
         ApplyPlayerPosition(data);
         ApplyPlayerHp(data);
+        ApplyPlayerLevel(data);
         ApplyGold(data);
         ApplyHouseLevel(data);
         ApplyResources(data);
     }
 
-    /// <summary>
-    /// 현재 게임 상태를 마지막 선택 슬롯에 저장합니다.
-    /// </summary>
     public void SaveCurrentGame()
     {
         int slot = PlayerPrefs.GetInt("LastSelectedSlot", 0);
@@ -139,40 +130,46 @@ public class SaveLoadController : MonoBehaviour
         SaveCurrentGameToSlot(slot);
     }
 
-    /// <summary>
-    /// 특정 슬롯에 현재 게임 상태를 저장합니다.
-    /// </summary>
     public void SaveCurrentGameToSlot(int slot)
     {
         SaveData data = new SaveData();
 
-        // 닉네임
         data.nickname = PlayerPrefs.GetString("PlayerNickname", "플레이어");
 
-        // 플레이어 위치
         if (playerTransform != null)
         {
             data.posX = playerTransform.position.x;
             data.posY = playerTransform.position.y;
             data.posZ = playerTransform.position.z;
+            
+            PlayerController pc =  playerTransform.GetComponent<PlayerController>();
+            if (pc == null) pc = playerTransform.GetComponentInChildren<PlayerController>();
+            data.playerHp = pc != null ? pc._playerCurrentHp : 100f;
+            data.playerMaxHp = pc != null ? pc._playerMaxHp : 100f;
         }
         else if (defaultSpawnPoint != null)
         {
             data.posX = defaultSpawnPoint.position.x;
             data.posY = defaultSpawnPoint.position.y;
             data.posZ = defaultSpawnPoint.position.z;
+            data.playerHp = 100f;
         }
 
-        // 플레이어 체력
-        data.playerHp = GetFloatValue(playerHpTarget, playerHpFieldName, 100f);
+        if (playerLevelSystem != null)
+        {
+            data.playerLevel = playerLevelSystem.GetCurrentLevel();
+            data.playerXP = playerLevelSystem.GetCurrentXP();
+        }
+        else
+        {
+            data.playerLevel = 1;
+            data.playerXP = 0;
+            Log("저장 시 플레이어 레벨 생략: playerLevelSystem이 비어 있습니다.");
+        }
 
-        // 골드
         data.gold = GetIntValue(goldTarget, goldFieldName, 0);
-
-        // 집 레벨
         data.houseLevel = GetIntValue(houseLevelTarget, houseLevelFieldName, 1);
 
-        // 자원
         if (resourceInventoryTarget != null)
         {
             data.wood = resourceInventoryTarget.GetAmount(woodResource);
@@ -186,7 +183,7 @@ public class SaveLoadController : MonoBehaviour
         }
 
         SaveManager.Save(slot, data);
-        Log($"현재 게임 저장 완료: 슬롯 {slot} / wood={data.wood}, stone={data.stone}, iron={data.iron}, coin={data.coin}");
+        Log($"현재 게임 저장 완료: 슬롯 {slot} / level={data.playerLevel}, xp={data.playerXP}");
     }
 
     #region 적용 함수
@@ -201,7 +198,6 @@ public class SaveLoadController : MonoBehaviour
 
         Vector3 loadPosition = new Vector3(data.posX, data.posY, data.posZ);
 
-        // 저장 좌표가 0,0,0이면 기본 시작 위치 사용
         if (loadPosition == Vector3.zero && defaultSpawnPoint != null)
         {
             loadPosition = defaultSpawnPoint.position;
@@ -211,7 +207,6 @@ public class SaveLoadController : MonoBehaviour
         Rigidbody rb = playerTransform.GetComponent<Rigidbody>();
         CapsuleCollider capsule = playerTransform.GetComponent<CapsuleCollider>();
 
-        // 캡슐 높이만큼 위로 보정
         if (capsule != null)
         {
             float halfHeight = capsule.height * 0.5f;
@@ -242,22 +237,35 @@ public class SaveLoadController : MonoBehaviour
 
     private void ApplyPlayerHp(SaveData data)
     {
-        if (playerHpTarget == null)
+        if (playerTransform == null) return;
+
+        PlayerController playerController = playerTransform.GetComponent<PlayerController>();
+    
+        if (playerController == null)
+            playerController = playerTransform.GetComponentInChildren<PlayerController>();
+
+        if (playerController != null)
         {
-            Log("플레이어 체력 적용 생략: playerHpTarget이 비어 있습니다.");
+            playerController.SetCurrentHp(data.playerHp);
+            Log($"플레이어 체력 적용: {data.playerHp}");
+        }
+        else
+        {
+            Log("플레이어 체력 적용 실패: PlayerController를 찾을 수 없습니다.");
+        }
+    }
+    
+
+    private void ApplyPlayerLevel(SaveData data)
+    {
+        if (playerLevelSystem == null)
+        {
+            Log("플레이어 레벨 적용 생략: playerLevelSystem이 비어 있습니다.");
             return;
         }
 
-        bool success = SetFloatValue(playerHpTarget, playerHpFieldName, data.playerHp);
-
-        if (!success)
-        {
-            Log($"플레이어 체력 적용 실패: 변수명 [{playerHpFieldName}] 확인 필요");
-            return;
-        }
-
-        TryInvokeMethod(playerHpTarget, playerHpRefreshMethodName);
-        Log($"플레이어 체력 적용: {data.playerHp}");
+        playerLevelSystem.SetLevelData(data.playerLevel, data.playerXP);
+        Log($"플레이어 레벨 적용: level={data.playerLevel}, xp={data.playerXP}");
     }
 
     private void ApplyGold(SaveData data)
@@ -371,13 +379,9 @@ public class SaveLoadController : MonoBehaviour
         int currentAmount = inv.GetAmount(res);
 
         if (targetAmount > currentAmount)
-        {
             inv.Add(res, targetAmount - currentAmount);
-        }
         else if (targetAmount < currentAmount)
-        {
             inv.Spend(res, currentAmount - targetAmount);
-        }
     }
 
     #endregion
@@ -391,9 +395,7 @@ public class SaveLoadController : MonoBehaviour
 
         System.Type type = target.GetType();
 
-        FieldInfo field = type.GetField(
-            memberName,
-            BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+        FieldInfo field = type.GetField(memberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
         if (field != null)
         {
@@ -410,9 +412,7 @@ public class SaveLoadController : MonoBehaviour
             }
         }
 
-        PropertyInfo property = type.GetProperty(
-            memberName,
-            BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+        PropertyInfo property = type.GetProperty(memberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
         if (property != null && property.CanWrite)
         {
@@ -439,9 +439,7 @@ public class SaveLoadController : MonoBehaviour
 
         System.Type type = target.GetType();
 
-        FieldInfo field = type.GetField(
-            memberName,
-            BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+        FieldInfo field = type.GetField(memberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
         if (field != null)
         {
@@ -458,9 +456,7 @@ public class SaveLoadController : MonoBehaviour
             }
         }
 
-        PropertyInfo property = type.GetProperty(
-            memberName,
-            BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+        PropertyInfo property = type.GetProperty(memberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
         if (property != null && property.CanWrite)
         {
@@ -487,9 +483,7 @@ public class SaveLoadController : MonoBehaviour
 
         System.Type type = target.GetType();
 
-        FieldInfo field = type.GetField(
-            memberName,
-            BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+        FieldInfo field = type.GetField(memberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
         if (field != null)
         {
@@ -502,9 +496,7 @@ public class SaveLoadController : MonoBehaviour
                 return Mathf.RoundToInt(floatValue);
         }
 
-        PropertyInfo property = type.GetProperty(
-            memberName,
-            BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+        PropertyInfo property = type.GetProperty(memberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
         if (property != null && property.CanRead)
         {
@@ -527,9 +519,7 @@ public class SaveLoadController : MonoBehaviour
 
         System.Type type = target.GetType();
 
-        FieldInfo field = type.GetField(
-            memberName,
-            BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+        FieldInfo field = type.GetField(memberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
         if (field != null)
         {
@@ -542,9 +532,7 @@ public class SaveLoadController : MonoBehaviour
                 return intValue;
         }
 
-        PropertyInfo property = type.GetProperty(
-            memberName,
-            BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+        PropertyInfo property = type.GetProperty(memberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
         if (property != null && property.CanRead)
         {
@@ -571,9 +559,7 @@ public class SaveLoadController : MonoBehaviour
 
         System.Type type = target.GetType();
 
-        MethodInfo method = type.GetMethod(
-            methodName,
-            BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+        MethodInfo method = type.GetMethod(methodName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
         if (method == null)
         {

@@ -105,12 +105,25 @@ public class GameOverUI : MonoBehaviour
     private void OnClickRetry()
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene(gameSceneName);
+
+        int slot = PlayerPrefs.GetInt("LastSelectedSlot", 0);
+        if (slot > 0)
+        {
+            SaveData data = SaveManager.Load(slot) ??  new SaveData();
+            data.playerHp = data.playerMaxHp;
+            SaveManager.Save(slot, data);
+        }
+        SceneManager.LoadScene(retryButtonName);
     }
 
     private void OnClickMain()
     {
         Time.timeScale = 1f;
+        
+        var saveLoad = FindObjectOfType<SaveLoadController>();
+        if (saveLoad != null)
+            saveLoad.SaveCurrentGame();
+
         SceneManager.LoadScene(mainMenuSceneName);
     }
 }

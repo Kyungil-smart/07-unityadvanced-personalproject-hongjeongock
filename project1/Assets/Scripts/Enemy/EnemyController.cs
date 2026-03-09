@@ -24,12 +24,14 @@ public class EnemyController : MonoBehaviour, IDamageable
     [SerializeField] private float _attackDamage = 5f; // 공격력
     [SerializeField] private float _attackRange = 1.5f; // 공격 범위
     [SerializeField] private float _attackCooldown = 1.5f; // 공격 쿨타임
+    [SerializeField] private int xpReward = 3;
 
     private Rigidbody _rb;
     private Animator _animator;
     private float _currentHP;
     private float _nextAttackTime;
     private bool _isDie;
+    private PlayerLevelSystem _playerLevelSystem;
     
     [Header("사운드")]
     [SerializeField] private AudioSource _idleAudioSource;
@@ -65,7 +67,7 @@ public class EnemyController : MonoBehaviour, IDamageable
             if (player != null)
                 target = player.transform;
         }
-        
+        _playerLevelSystem = FindObjectOfType<PlayerLevelSystem>();
         _idleAudioSource.clip = _idleClip;
         _idleAudioSource.loop = true;
         _idleAudioSource.Play();
@@ -166,6 +168,11 @@ public class EnemyController : MonoBehaviour, IDamageable
         if(_isDie) return;
 
         _isDie = true;
+
+        if (_playerLevelSystem != null)
+        {
+            _playerLevelSystem.AddXP(xpReward);
+        }
 
         _idleAudioSource.Stop();
         

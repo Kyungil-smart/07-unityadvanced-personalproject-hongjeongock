@@ -1,10 +1,16 @@
 using System;
+using UnityEngine;
 
 [Serializable]
 public class SaveData
 {
+    public Vector3 playerPosition;
+
     public string nickname;
     public float playerHp;
+    public float playerMaxHp;
+    public int playerLevel;
+    public int playerXP;
 
     public float posX;
     public float posY;

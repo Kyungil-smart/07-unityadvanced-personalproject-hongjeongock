@@ -45,6 +45,9 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         _playerCurrentHp = _playerMaxHp;
         IsDead = false;
+        
+        PlayerPrefs.SetFloat("PlayerHP", _playerCurrentHp);
+        PlayerPrefs.Save();
         OnHPChanged?.Invoke(_playerCurrentHp,  _playerMaxHp);
     }
 
@@ -87,13 +90,18 @@ public class PlayerController : MonoBehaviour, IDamageable
             }
         }
     }
+    public void SetCurrentHp(float hp)
+    {
+        _playerCurrentHp = Mathf.Clamp(hp, 0f, _playerMaxHp);
+        IsDead = _playerCurrentHp <= 0f;
+        OnHPChanged?.Invoke(_playerCurrentHp, _playerMaxHp);
+    }
     
     public void Heal(float amount)
     {
         if (amount <= 0f) return;
         
         float prevHp = _playerCurrentHp;
-        
         _playerCurrentHp = Mathf.Min(_playerCurrentHp + amount, _playerMaxHp);
 
         if (!Mathf.Approximately(prevHp, _playerCurrentHp))
