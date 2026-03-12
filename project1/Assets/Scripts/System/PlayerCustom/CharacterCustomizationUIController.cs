@@ -13,6 +13,7 @@ public class CharacterCustomizationUIController : MonoBehaviour
 
     [Header("완료 후 이동할 씬")]
     [SerializeField] private string nextSceneName = "MainScene";
+    [SerializeField] private string cancelSceneName = "MainMenu";
 
     [Header("옵션 개수")]
     [SerializeField] private int bodyCount = 15;
@@ -343,7 +344,7 @@ public class CharacterCustomizationUIController : MonoBehaviour
 
     private void OnClickCancel()
     {
-        gameObject.SetActive(false);
+        SceneManager.LoadScene(cancelSceneName);
     }
 
     private void OnClickComplete()

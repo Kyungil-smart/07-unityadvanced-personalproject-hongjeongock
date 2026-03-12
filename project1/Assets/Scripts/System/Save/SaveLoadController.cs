@@ -55,6 +55,8 @@ public class SaveLoadController : MonoBehaviour
 
     [Header("새 게임 기본 시작 위치")]
     [SerializeField] private Transform defaultSpawnPoint;
+    
+    private bool _isNewGame = false;
 
     private void Start()
     {
@@ -75,10 +77,19 @@ public class SaveLoadController : MonoBehaviour
     public void LoadFromLastSelectedSlot()
     {
         int slot = PlayerPrefs.GetInt("LastSelectedSlot", 0);
+        bool isNewGame = PlayerPrefs.GetInt("IsNewGame", 0) == 1;
 
-        if (slot <= 0 || !SaveManager.HasSave(slot))
+        if (isNewGame)
         {
-            Log("유효한 저장 슬롯이 없어 기본 시작 위치를 사용합니다.");
+            PlayerPrefs.SetInt("IsNewGame", 0);
+            PlayerPrefs.Save();
+            MovePlayerToDefaultSpawnPoint();
+            return;
+        }
+
+        if (slot <= 0 || !SaveManager.HasSave(slot) || _isNewGame)
+        {
+            Log("기본 시작 위치를 사용합니다.");
             MovePlayerToDefaultSpawnPoint();
             return;
         }
@@ -94,6 +105,11 @@ public class SaveLoadController : MonoBehaviour
 
         ApplySaveData(data);
         Log($"로드 완료: 슬롯 {slot}");
+    }
+
+    public void SetNewGame(bool isNewGame)
+    {
+        _isNewGame = isNewGame;
     }
     
     private void OnApplicationQuit()

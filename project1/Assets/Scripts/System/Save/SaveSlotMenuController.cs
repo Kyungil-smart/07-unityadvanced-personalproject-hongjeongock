@@ -6,6 +6,7 @@ public class SaveSlotMenuController : MonoBehaviour
 {
     [Header("씬 이름")]
     [SerializeField] private string mainSceneName = "MainScene";
+    [SerializeField] private string customizeSceneName = "CharacterCustomize"; // ← 추가
 
     [Header("기본 새 게임 값")]
     [SerializeField] private float defaultPlayerHp = 100f;
@@ -13,7 +14,7 @@ public class SaveSlotMenuController : MonoBehaviour
     [SerializeField] private int defaultHouseLevel = 1;
     
     [Header("새 게임 시작 위치")]
-    [SerializeField] private Vector3 defaultStartPosition = new Vector3(-71.408f, 2.6f, 115.95f);
+    [SerializeField] private Vector3 defaultStartPosition = new Vector3(-27.9552841f,-1.53746998f,-0.0435905457f);
 
     private UIDocument _uiDocument;
     private VisualElement _root;
@@ -68,15 +69,10 @@ public class SaveSlotMenuController : MonoBehaviour
         UnbindButtons();
     }
 
-    /// <summary>
-    /// UXML에서 필요한 UI 요소를 찾아서 캐싱합니다.
-    /// </summary>
     private void CacheUI()
     {
-        // 닫기 버튼
         _btnClose = _root.Q<Button>("btn-save-close");
 
-        // 슬롯 1
         _slot1State = _root.Q<Label>("txt-slot-1-state");
         _slot1Nickname = _root.Q<Label>("txt-slot-1-nickname");
         _slot1Progress = _root.Q<Label>("txt-slot-1-day");
@@ -84,7 +80,6 @@ public class SaveSlotMenuController : MonoBehaviour
         _slot1LoadButton = _root.Q<Button>("btn-slot-1-load");
         _slot1NewButton = _root.Q<Button>("btn-slot-1-new");
 
-        // 슬롯 2
         _slot2State = _root.Q<Label>("txt-slot-2-state");
         _slot2Nickname = _root.Q<Label>("txt-slot-2-nickname");
         _slot2Progress = _root.Q<Label>("txt-slot-2-day");
@@ -92,7 +87,6 @@ public class SaveSlotMenuController : MonoBehaviour
         _slot2LoadButton = _root.Q<Button>("btn-slot-2-load");
         _slot2NewButton = _root.Q<Button>("btn-slot-2-new");
 
-        // 슬롯 3
         _slot3State = _root.Q<Label>("txt-slot-3-state");
         _slot3Nickname = _root.Q<Label>("txt-slot-3-nickname");
         _slot3Progress = _root.Q<Label>("txt-slot-3-day");
@@ -101,9 +95,6 @@ public class SaveSlotMenuController : MonoBehaviour
         _slot3NewButton = _root.Q<Button>("btn-slot-3-new");
     }
 
-    /// <summary>
-    /// 버튼 클릭 이벤트를 연결합니다.
-    /// </summary>
     private void BindButtons()
     {
         if (_btnClose != null)
@@ -112,101 +103,44 @@ public class SaveSlotMenuController : MonoBehaviour
             _btnClose.clicked += CloseMenu;
         }
 
-        if (_slot1LoadButton != null)
-        {
-            _slot1LoadButton.clicked -= OnClickLoadSlot1;
-            _slot1LoadButton.clicked += OnClickLoadSlot1;
-        }
-
-        if (_slot1NewButton != null)
-        {
-            _slot1NewButton.clicked -= OnClickNewSlot1;
-            _slot1NewButton.clicked += OnClickNewSlot1;
-        }
-
-        if (_slot2LoadButton != null)
-        {
-            _slot2LoadButton.clicked -= OnClickLoadSlot2;
-            _slot2LoadButton.clicked += OnClickLoadSlot2;
-        }
-
-        if (_slot2NewButton != null)
-        {
-            _slot2NewButton.clicked -= OnClickNewSlot2;
-            _slot2NewButton.clicked += OnClickNewSlot2;
-        }
-
-        if (_slot3LoadButton != null)
-        {
-            _slot3LoadButton.clicked -= OnClickLoadSlot3;
-            _slot3LoadButton.clicked += OnClickLoadSlot3;
-        }
-
-        if (_slot3NewButton != null)
-        {
-            _slot3NewButton.clicked -= OnClickNewSlot3;
-            _slot3NewButton.clicked += OnClickNewSlot3;
-        }
+        if (_slot1LoadButton != null) { _slot1LoadButton.clicked -= OnClickLoadSlot1; _slot1LoadButton.clicked += OnClickLoadSlot1; }
+        if (_slot1NewButton != null)  { _slot1NewButton.clicked  -= OnClickNewSlot1;  _slot1NewButton.clicked  += OnClickNewSlot1; }
+        if (_slot2LoadButton != null) { _slot2LoadButton.clicked -= OnClickLoadSlot2; _slot2LoadButton.clicked += OnClickLoadSlot2; }
+        if (_slot2NewButton != null)  { _slot2NewButton.clicked  -= OnClickNewSlot2;  _slot2NewButton.clicked  += OnClickNewSlot2; }
+        if (_slot3LoadButton != null) { _slot3LoadButton.clicked -= OnClickLoadSlot3; _slot3LoadButton.clicked += OnClickLoadSlot3; }
+        if (_slot3NewButton != null)  { _slot3NewButton.clicked  -= OnClickNewSlot3;  _slot3NewButton.clicked  += OnClickNewSlot3; }
     }
 
-    /// <summary>
-    /// 버튼 이벤트 연결을 해제합니다.
-    /// </summary>
     private void UnbindButtons()
     {
-        if (_btnClose != null)
-            _btnClose.clicked -= CloseMenu;
-
-        if (_slot1LoadButton != null)
-            _slot1LoadButton.clicked -= OnClickLoadSlot1;
-        if (_slot1NewButton != null)
-            _slot1NewButton.clicked -= OnClickNewSlot1;
-
-        if (_slot2LoadButton != null)
-            _slot2LoadButton.clicked -= OnClickLoadSlot2;
-        if (_slot2NewButton != null)
-            _slot2NewButton.clicked -= OnClickNewSlot2;
-
-        if (_slot3LoadButton != null)
-            _slot3LoadButton.clicked -= OnClickLoadSlot3;
-        if (_slot3NewButton != null)
-            _slot3NewButton.clicked -= OnClickNewSlot3;
+        if (_btnClose != null)        _btnClose.clicked        -= CloseMenu;
+        if (_slot1LoadButton != null) _slot1LoadButton.clicked -= OnClickLoadSlot1;
+        if (_slot1NewButton != null)  _slot1NewButton.clicked  -= OnClickNewSlot1;
+        if (_slot2LoadButton != null) _slot2LoadButton.clicked -= OnClickLoadSlot2;
+        if (_slot2NewButton != null)  _slot2NewButton.clicked  -= OnClickNewSlot2;
+        if (_slot3LoadButton != null) _slot3LoadButton.clicked -= OnClickLoadSlot3;
+        if (_slot3NewButton != null)  _slot3NewButton.clicked  -= OnClickNewSlot3;
     }
 
-    /// <summary>
-    /// 모든 슬롯 UI를 새로고침합니다.
-    /// </summary>
     private void RefreshAllSlots()
     {
         RefreshSlotUI(1, _slot1State, _slot1Nickname, _slot1Progress, _slot1Time, _slot1LoadButton);
         RefreshSlotUI(2, _slot2State, _slot2Nickname, _slot2Progress, _slot2Time, _slot2LoadButton);
         RefreshSlotUI(3, _slot3State, _slot3Nickname, _slot3Progress, _slot3Time, _slot3LoadButton);
-        
     }
 
-    /// <summary>
-    /// 슬롯 하나의 UI를 갱신합니다.
-    /// </summary>
-    private void RefreshSlotUI(
-        int slot,
-        Label stateLabel,
-        Label nicknameLabel,
-        Label progressLabel,
-        Label timeLabel,
-        Button loadButton)
+    private void RefreshSlotUI(int slot, Label stateLabel, Label nicknameLabel,
+        Label progressLabel, Label timeLabel, Button loadButton)
     {
         bool hasSave = SaveManager.HasSave(slot);
 
         if (!hasSave)
         {
-            if (stateLabel != null) stateLabel.text = "빈 슬롯";
+            if (stateLabel != null)   stateLabel.text   = "빈 슬롯";
             if (nicknameLabel != null) nicknameLabel.text = "이름: -";
             if (progressLabel != null) progressLabel.text = "진행도: -";
-            if (timeLabel != null) timeLabel.text = "저장 시간: -";
-
-            if (loadButton != null)
-                loadButton.SetEnabled(false);   // 여기만
-
+            if (timeLabel != null)    timeLabel.text    = "저장 시간: -";
+            if (loadButton != null)   loadButton.SetEnabled(false);
             return;
         }
 
@@ -214,35 +148,21 @@ public class SaveSlotMenuController : MonoBehaviour
 
         if (data == null)
         {
-            if (stateLabel != null) stateLabel.text = "손상됨";
+            if (stateLabel != null)   stateLabel.text   = "손상됨";
             if (nicknameLabel != null) nicknameLabel.text = "이름: -";
             if (progressLabel != null) progressLabel.text = "진행도: -";
-            if (timeLabel != null) timeLabel.text = "저장 시간: -";
-
-            if (loadButton != null)
-                loadButton.SetEnabled(false);
-
+            if (timeLabel != null)    timeLabel.text    = "저장 시간: -";
+            if (loadButton != null)   loadButton.SetEnabled(false);
             return;
         }
 
-        if (stateLabel != null) stateLabel.text = "사용 중";
-
-        if (nicknameLabel != null)
-            nicknameLabel.text = $"이름: {data.nickname}";
-
-        if (progressLabel != null)
-            progressLabel.text = $"진행도: 집 {data.houseLevel}레벨 / 골드 {data.gold}";
-
-        if (timeLabel != null)
-            timeLabel.text = $"저장 시간: {data.saveTime}";
+        if (stateLabel != null)    stateLabel.text    = "사용 중";
+        if (nicknameLabel != null) nicknameLabel.text = $"이름: {data.nickname}";
+        if (progressLabel != null) progressLabel.text = $"진행도: 집 {data.houseLevel}레벨 / 골드 {data.gold}";
+        if (timeLabel != null)     timeLabel.text     = $"저장 시간: {data.saveTime}";
 
         if (loadButton != null)
-        {
-            if (_isNewGameMode)
-                loadButton.SetEnabled(false);   // 새 게임 모드면 불러오기 비활성
-            else
-                loadButton.SetEnabled(true);    // 저장 관리 모드면 활성
-        }
+            loadButton.SetEnabled(!_isNewGameMode);
     }
     
     public void SetNewGameMode(bool isNewGame)
@@ -251,48 +171,37 @@ public class SaveSlotMenuController : MonoBehaviour
         RefreshAllSlots();
     }
 
-    /// <summary>
-    /// 새 게임 기본 데이터를 생성합니다.
-    /// </summary>
     private SaveData CreateNewSaveData()
     {
         SaveData data = new SaveData();
-
-        data.nickname = PlayerPrefs.GetString("PlayerNickname", "플레이어");
-        data.playerHp = defaultPlayerHp;
-
-        data.posX = defaultStartPosition.x;
-        data.posY = defaultStartPosition.y;
-        data.posZ = defaultStartPosition.z;
-
-        data.gold = defaultGold;
-        data.houseLevel = defaultHouseLevel;
-
+        data.nickname    = PlayerPrefs.GetString("PlayerNickname", "플레이어");
+        data.playerHp    = defaultPlayerHp;
+        data.posX        = defaultStartPosition.x;
+        data.posY        = defaultStartPosition.y;
+        data.posZ        = defaultStartPosition.z;
+        data.gold        = defaultGold;
+        data.houseLevel  = defaultHouseLevel;
         return data;
     }
 
     /// <summary>
-    /// 슬롯을 새 게임으로 시작합니다.
+    /// 슬롯에 새 게임 데이터를 저장하고 커스터마이징 씬으로 이동
     /// </summary>
     private void StartNewGameInSlot(int slot)
     {
         SaveData newData = CreateNewSaveData();
-
         SaveManager.Save(slot, newData);
 
-        // 마지막 선택 슬롯 저장
         PlayerPrefs.SetInt("LastSelectedSlot", slot);
+        PlayerPrefs.SetInt("IsNewGame", 1);
         PlayerPrefs.Save();
-        
-        RefreshAllSlots();
 
-        Debug.Log($"슬롯 {slot} 새 게임 시작");
-        SceneManager.LoadScene(mainSceneName);
+        Debug.Log($"슬롯 {slot} 새 게임 → 커스터마이징 씬으로 이동");
+
+        // ↓ 핵심 변경: MainScene 대신 CharacterCustomize로 이동
+        SceneManager.LoadScene(customizeSceneName);
     }
 
-    /// <summary>
-    /// 슬롯 저장 데이터를 불러옵니다.
-    /// </summary>
     private void LoadGameFromSlot(int slot)
     {
         if (!SaveManager.HasSave(slot))
@@ -302,61 +211,24 @@ public class SaveSlotMenuController : MonoBehaviour
             return;
         }
 
-        // 마지막 선택 슬롯 저장
         PlayerPrefs.SetInt("LastSelectedSlot", slot);
         PlayerPrefs.Save();
 
-        Debug.Log($"슬롯 {slot} 불러오기");
+        Debug.Log($"슬롯 {slot} 불러오기 → MainScene으로 이동");
         SceneManager.LoadScene(mainSceneName);
     }
 
-    /// <summary>
-    /// 저장 슬롯 메뉴를 닫습니다.
-    /// </summary>
     private void CloseMenu()
     {
         gameObject.SetActive(false);
     }
 
-    #region 슬롯1 버튼
-
-    private void OnClickLoadSlot1()
-    {
-        LoadGameFromSlot(1);
-    }
-
-    private void OnClickNewSlot1()
-    {
-        StartNewGameInSlot(1);
-    }
-
-    #endregion
-
-    #region 슬롯2 버튼
-
-    private void OnClickLoadSlot2()
-    {
-        LoadGameFromSlot(2);
-    }
-
-    private void OnClickNewSlot2()
-    {
-        StartNewGameInSlot(2);
-    }
-
-    #endregion
-
-    #region 슬롯3 버튼
-
-    private void OnClickLoadSlot3()
-    {
-        LoadGameFromSlot(3);
-    }
-
-    private void OnClickNewSlot3()
-    {
-        StartNewGameInSlot(3);
-    }
-
+    #region 슬롯 버튼
+    private void OnClickLoadSlot1() => LoadGameFromSlot(1);
+    private void OnClickNewSlot1()  => StartNewGameInSlot(1);
+    private void OnClickLoadSlot2() => LoadGameFromSlot(2);
+    private void OnClickNewSlot2()  => StartNewGameInSlot(2);
+    private void OnClickLoadSlot3() => LoadGameFromSlot(3);
+    private void OnClickNewSlot3()  => StartNewGameInSlot(3);
     #endregion
 }
